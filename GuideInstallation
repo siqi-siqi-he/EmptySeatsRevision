@@ -1,0 +1,38 @@
+Installation can be distinguished as system-wide and user-based. If you install it on your pc, you can choose either of
+them. But on the amplmachine (server), only user-based installation is possible.
+
+Here is a list of solvers you need to install:
+
+1. cplex: (academic version)
+    A. system-wide installation on your pc:
+    In order to get an academic license
+    https://community.ibm.com/community/user/ai-datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students
+    https://www.ibm.com/academic/
+    Here is the guide on installation.
+    https://github.com/academic-initiative/documentation/tree/main/academic-initiative/how-to/How-to-download-IBM-ILOG-CPLEX
+    Once it's installed, you can install the Python API:
+    https://www.ibm.com/docs/en/icos/20.1.0?topic=cplex-setting-up-python-api
+
+    B. user-wide installation on the server:
+    Since the cplex studio is already installed on the server, all we need to do is to install the python API.
+    https://www.ibm.com/docs/en/icos/20.1.0?topic=cplex-setting-up-python-api
+    1. installed python 3.8.10 in my user home
+    2. changed to the clpex folder where setup.py resides
+    3. called setup.py build --build-base="C:\Users\siqhe\Documents\cplex" install
+        !: this means you write:
+            C:\Program Files\IBM\ILOG\CPLEX_Studio201\python>setup.py build --build-base="C:\Users\siqhe\Documents\cplex" install
+        in your cmd. Be sure to replace siqhe with your own user name.
+    4. waited until finished
+
+2. mosek:
+    mosek is used in cvxpy to solve convex optimization problem. Certain disciplined convex programming rules need to be
+    fulfilled in order to run cvx and mosek. For further information, see the other guide in dcp. For general information
+    on using different solvers (including mosek) in cvxpy, see
+    https://www.cvxpy.org/tutorial/solvers/index.html
+
+    General information about mosek with academic license, and also to get an academic license, see the link below:
+    https://www.mosek.com/products/academic-licenses/
+
+    To install the Python API for mosek, see
+    https://docs.mosek.com/latest/pythonapi/install-interface.html
+

@@ -1,0 +1,46 @@
+This is a guide on versions of different libraries you will need to run the codes. Here is a list of the names and
+the corresponding version of it, some you might need and some you might not:
+
+Name: python
+Version: 3.8.10
+
+Name: pandas
+Version: 2.0.3
+
+Name: numpy
+Version: 1.23.0
+
+Name: cvxpy
+Version: 1.1.18
+
+Name: Mosek (I think it doesn't harm if it's up to date)
+Version: 10.1.26
+
+Name: docplex (I think it doesn't harm if it's up to date)
+Version: 2.18.200
+
+Name: ecos
+Version: 2.0.12
+
+Name: scs
+Version: 3.2.4.post1
+
+--- here are the libraries whose versions might not be very important ---
+
+Name: ampl-module-baron
+Version: 20240508
+
+Name: ampl-module-base
+Version: 20240812
+
+Name: amplpy
+Version: 0.14.0
+
+Name: ampltools
+Version: 0.7.5
+
+--- might not be important at all ---
+
+Name: cplex
+Version: 20.1.0.0
+

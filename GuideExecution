@@ -1,0 +1,12 @@
+In order to execute the code, open command prompt, and you see the following text:
+
+'''
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
+
+C:\Users\siqhe>
+'''
+
+type '''cd EMPTY_SEATS'''
+
+And then you are at the folder for different codes. To run ABC.py, just type '''python ABC.py'''
