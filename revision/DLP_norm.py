@@ -21,11 +21,9 @@ def DLP_UB(c):
     elif choice == 3:
         a1, a2, a3, b, tau = cases.incre_seats(c)
     elif choice == 4:
-        a1, a2, a3, b, tau = cases.homo_seats_wo3(c)
+        a1, a2, a3, b, tau = cases.hom_de_in_seats(c)
     elif choice == 5:
-        a1, a2, a3, b, tau = cases.aw_seats_wo3(c)
-    elif choice == 6:
-        a1, a2, a3, b, tau = cases.incre_seats_wo3(c)
+        a1, a2, a3, b, tau = cases.hom_hom_in_seats(c)
 
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
@@ -38,7 +36,9 @@ def DLP_UB(c):
                        + cp.sum(
             [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j]
              for j in range(c)]) \
-                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0))
+                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
+                       + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j]  for j in range(c)]) \
+                       + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0))
 
     objective = cp.Maximize(objective_cp)
 
@@ -77,7 +77,7 @@ def DLP_UB(c):
 
 eps = 1e-5
 results=[0]*11
-for choice in range(4,7):
+for choice in range(4,6):
     for i in range(1,11):
         c=i*8
         T = c * 2

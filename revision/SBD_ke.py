@@ -230,12 +230,16 @@ for i in range(1,11):
     c=i*8
     T=c*2
     print("c:", c)
-    for choice in range(4,7):
+    for choice in range(4,6):
         print("choice:", choice)
-        if choice == 4:
-            a1, a2, a3, b, tau = cases.homo_seats_wo3(c)
+        if choice == 1:
+            a1, a2, a3, b, tau = cases.homo_seats(c)
+        elif choice == 2:
+            a1, a2, a3, b, tau = cases.aw_seats(c)
+        elif choice == 3:
+            a1, a2, a3, b, tau = cases.incre_seats(c)
+        elif choice == 4:
+            a1, a2, a3, b, tau = cases.hom_de_in_seats(c)
         elif choice == 5:
-            a1, a2, a3, b, tau = cases.aw_seats_wo3(c)
-        elif choice == 6:
-            a1, a2, a3, b, tau = cases.incre_seats_wo3(c)
+            a1, a2, a3, b, tau = cases.hom_hom_in_seats(c)
         computeDP(choice)
