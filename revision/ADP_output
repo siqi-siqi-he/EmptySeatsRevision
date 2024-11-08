@@ -1,0 +1,11 @@
+total part for solving to optimality 22.304509162902832
+capacity 8 choice 5 Revenue 72.72918834940421 time 0 236.77417159080505 time 1 22.304509162902832 ite_before 30 ite_3 31
+
+total part for solving to optimality 5.821501731872559
+capacity 16 choice 5 Revenue 163.60756989634754 time 0 491.88588190078735 time 1 5.821501731872559 ite_before 71 ite_3 72
+
+total part for solving to optimality 12.204112768173218
+capacity 24 choice 5 Revenue 262.2244648017175 time 0 1119.9348239898682 time 1 12.204112768173218 ite_before 119 ite_3 120
+
+total part for solving to optimality 21.530277729034424
+capacity 32 choice 5 Revenue 366.1389182202463 time 0 3888.5171942710876 time 1 21.530277729034424 ite_before 186 ite_3 187

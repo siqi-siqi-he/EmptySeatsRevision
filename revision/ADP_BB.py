@@ -571,8 +571,7 @@ def write_excel(Z, elapsed_time,total_3, ite_before_3, ite):
     print("writing complete")
 
 def ADP(c):
-    print(choice)
-    print("inner function", c)
+
     #this function calls the subproblem function, and solved the linear programing problem using cplex
 
     start_time = time.time()
@@ -785,11 +784,9 @@ def ADP(c):
 sig=0.001
 #set the number of processors for parallel computing
 num_processes=16
-for c in range(8,56,8):
+for c in range(32,40,8):
     T=c*2
     for choice in range(5,6):
-        print(choice)
-        print("outer loop", c)
         if choice == 1:
             a1, a2, a3, b, tau = cases.homo_seats(c)
         elif choice == 2:
