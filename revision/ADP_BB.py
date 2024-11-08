@@ -15,6 +15,8 @@ import os
 import pandas as pd
 from multiprocessing import Pool, Manager
 
+warnings.filterwarnings("ignore", message=".*Conversion of an array with ndim > 0 to a scalar is deprecated.*")
+
 counter = itertools.count()
 #warnings.simplefilter("error", RuntimeWarning)
 eps = 1e-5
@@ -643,8 +645,10 @@ def ADP(c):
 
         #adding the results as new constraints to the linear programming problem.
         for t in range(1, T + 1):
+            '''
             print(x[t - 1, :], y[t - 1])
             print('pi:', pi[t - 1])
+            '''
             #if the constraints are not violating, we don't add them to LP
             if pi[t - 1] <= 0:
                 continue
@@ -677,11 +681,13 @@ def ADP(c):
             theta = [thetap[t].solution_value for t in range(T + 1)]
             w = [wp[t].solution_value for t in range(T + 1)]
             Z = mp.objective_value
+        '''
         print(theta)
         print(v)
         print(w)
         print(sum(pi))
         print('Revenue:', Z)
+        '''
     end_time = time.time()
     elapsed_time = end_time - start_time
     print('time in total:', elapsed_time)
@@ -722,8 +728,10 @@ def ADP(c):
 
         for t in range(1, T + 1):
             sub_t_start = time.time()
+            '''
             print(x[t - 1, :], y[t - 1])
             print('pi:', pi[t - 1])
+            '''
             if pi[t - 1] <= 0:
                 continue
 
@@ -752,18 +760,23 @@ def ADP(c):
             theta = [thetap[t].solution_value for t in range(T + 1)]
             w = [wp[t].solution_value for t in range(T + 1)]
             Z = mp.objective_value
+        '''
         if __name__ == "__main__":
             print(theta)
             print(v)
             print(w)
             print(sum(pi))
             print('Revenue:', Z)
+        '''
     time_t_e=time.time()
     total_3=time_t_e-time_t_s
     print('total part for solving to optimality', total_3)
     save(v, w, theta, c, choice)
     print('capacity', c, 'choice', choice, 'Revenue', Z, 'time 0', elapsed_time, 'time 1', total_3, 'ite_before', ite_before_3, 'ite_3', ite,)
-    #write_excel(Z, elapsed_time,total_3, ite_before_3, ite)
+    
+    with open('ADP_output.txt', 'a') as f:
+        f.write(f'total part for solving to optimality {total_3}\n')
+        f.write(f'capacity {c} choice {choice} Revenue {Z} time 0 {elapsed_time} time 1 {total_3} ite_before {ite_before_3} ite_3 {ite}\n')
 
     return Z
 
