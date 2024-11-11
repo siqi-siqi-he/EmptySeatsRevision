@@ -12,3 +12,18 @@ capacity 32 choice 5 Revenue 366.1389182202463 time 0 3888.5171942710876 time 1 
 
 total part for solving to optimality 149.79736828804016
 capacity 40 choice 5 Revenue 474.1354370891363 time 0 13394.723456859589 time 1 149.79736828804016 ite_before 268 ite_3 270
+
+total part for solving to optimality 11.384352684020996
+capacity 8 choice 4 Revenue 73.1648187824978 time 0 196.501544713974 time 1 11.384352684020996 ite_before 28 ite_3 29
+
+total part for solving to optimality 29.795873403549194
+capacity 16 choice 4 Revenue 165.48122712169243 time 0 636.7129447460175 time 1 29.795873403549194 ite_before 66 ite_3 68
+
+total part for solving to optimality 8.97343111038208
+capacity 24 choice 4 Revenue 266.6469036342096 time 0 947.8645615577698 time 1 8.97343111038208 ite_before 119 ite_3 120
+
+total part for solving to optimality 189.2105588912964
+capacity 32 choice 4 Revenue 374.2802167088986 time 0 5083.712527751923 time 1 189.2105588912964 ite_before 187 ite_3 193
+
+total part for solving to optimality 80.60642576217651
+capacity 40 choice 4 Revenue 487.1510613481709 time 0 14278.853642940521 time 1 80.60642576217651 ite_before 268 ite_3 269

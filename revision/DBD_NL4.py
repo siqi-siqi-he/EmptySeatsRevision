@@ -193,7 +193,7 @@ for i in range(4):
     c=(i+1)*8
     T = c * 2
     print("c",c)
-    choice = 5
+    choice = 4
     if choice == 1:
         a1, a2, a3, b, tau = cases.homo_seats(c)
     elif choice == 2:

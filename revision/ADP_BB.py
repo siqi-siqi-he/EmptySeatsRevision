@@ -784,7 +784,7 @@ def ADP(c):
 sig=0.001
 #set the number of processors for parallel computing
 num_processes=16
-for c in range(8,16,8):
+for c in range(40,48,8):
     T=c*2
     for choice in range(4,5):
         if choice == 1:
