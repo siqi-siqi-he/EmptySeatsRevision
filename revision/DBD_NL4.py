@@ -12,11 +12,7 @@ def UP_t(c, a1, a2, a3, b, tau):
     return result
 
 def read(c,choice):
-<<<<<<< HEAD
-    folder_path = "revision/BB_test"
-=======
     folder_path = "BB_test"
->>>>>>> 90d97a9bceeab37e2e2a1b3d93e9eb9c00c5f769
     file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     v = np.loadtxt(file_path)
@@ -197,7 +193,7 @@ for i in range(4):
     c=(i+1)*8
     T = c * 2
     print("c",c)
-    choice = 5
+    choice = 4
     if choice == 1:
         a1, a2, a3, b, tau = cases.homo_seats(c)
     elif choice == 2:
