@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-import ADP_NL_cases as cases
+import cases as cases
 import cvxpy as cp
 import math
 from cvxpy.error import SolverError
@@ -77,19 +77,9 @@ def findseats(rand,p1,pj):
             return i
     raise TypeError("Math Wrong")
 
-def choose_choice(choice,c):
-    if choice==0:
-        a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice==1:
-        a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 2:
-        a1, a2, a3, b, tau = cases.aw_seats(c)
-    return a1, a2, a3, b, tau
-
 def Simulation(i):
     p3num=0
     T=c*2
-    a1, a2, a3, b, tau=choose_choice(choice,c)
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
     p2 = cp.Variable(1, name="p2")
@@ -105,7 +95,7 @@ def Simulation(i):
 
     for t in range(T,0,-1):
 
-        folder_path = "RandomNumbers"
+        folder_path = "EmptySeatsStudy/RandomNumbers"
         file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + "_DLPbasic.txt"
         file_path = f"{folder_path}/{file_name}"
         random = np.loadtxt(file_path)
@@ -161,7 +151,6 @@ def Simulation(i):
         if p0[0].value is None or p1[0].value is None or p2[0].value is None or p3[0].value is None:
             subp.solve(solver=cp.SCS)
 
-
         if p0[0].value is None or p1[0].value is None or p2[0].value is None or p3[0].value is None:
             raise ValueError("None again, tried=", p0[0].value ,p1[0].value,p2[0].value,p3[0].value)
         p00 = p0[0].value
@@ -175,9 +164,11 @@ def Simulation(i):
         price1=r1(p10,p2j0,p3j0,a1, a2, a3, b, tau)
         price2=[r2(j,p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
         price3 = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
+
         if random[i] > p10 + p20 + p30:
             continue
         elif random[i] < p10:
+            #print("buy 1 at", price1)
             Revenue = Revenue + price1
             y = y - 1
         elif random[i] < p10 + p20:
@@ -209,17 +200,18 @@ def Simulation(i):
 
 
 def run_Simulator():
-
+    num_sim=100
     start_time = time.time()
-    results=[0]*100
-    p3=[0]*100
-    for i in range(100):
+    results=[0]*num_sim
+    p3=[0]*num_sim
+    print(a3)
+    for i in range(num_sim):
         results[i], p3[i]=Simulation(i)
     end_time = time.time()
     mean=np.mean(results)
     var=np.var(results)
     p3n=np.mean(p3)
-    print(results)
+    #print(results)
     print('average:', mean)
     print('variance:', var)
     print('product 3:',p3n)
@@ -233,6 +225,7 @@ means=[0]*51
 vars=[0]*51
 p3=[0]*51
 for step in range(51):
+    print(step)
     a3=[0.1*step for i in range(len(a3))]
     means[step], vars[step],p3[step]=run_Simulator()
 

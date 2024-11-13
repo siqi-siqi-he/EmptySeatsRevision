@@ -1,8 +1,9 @@
 import cvxpy as cp
 import numpy as np
-import ADP_NL_cases as cases
+import cases as cases
 import math
 import time
+import os 
 
 c=8
 T=c*2
@@ -50,10 +51,12 @@ def DP():
     subp = cp.Problem(objective, constraints)
 
     subp.solve(solver=cp.MOSEK)
+
     dual=[0]*(c+1)
     for j in range(c):
         print(constraints[j])
         print(constraints[j].dual_value)
+
         dual[j]=constraints[j].dual_value
     d_temp=constraints[c].dual_value
     dual[c]=d_temp[0]
@@ -65,6 +68,8 @@ def DP():
     folder_path = "DP"
     file_name = "DLPnorm" + str(choice) + "capacity" + str(c) +"step"+str(step)+ ".txt"
     file_path = f"{folder_path}/{file_name}"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     np.savetxt(file_path, dual)
 
 a1, a2, a3, b, tau = cases.homo_seats(c)
