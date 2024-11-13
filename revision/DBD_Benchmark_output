@@ -1,0 +1,26 @@
+c 8
+choice 5
+total time 366.94421553611755
+UB for x (y to be tested): 69.80703083578696
+c 16
+choice 5
+total time 6548.070037841797
+UB for x (y to be tested): 160.53814525487178
+c 24
+choice 5
+total time 13579.33332157135
+UB for x (y to be tested): 259.4748138300807
+
+c 8
+choice 4
+total time 246.69540095329285
+UB for x (y to be tested): 70.73313261194811
+c 16
+choice 4
+total time 2766.096362352371
+UB for x (y to be tested): 162.85228117541476
+c 24
+choice 4
+total time 23574.730697393417
+UB for x (y to be tested): 263.6171970067787
+
