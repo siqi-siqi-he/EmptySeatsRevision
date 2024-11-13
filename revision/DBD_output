@@ -1,0 +1,33 @@
+c 8
+choice 5
+total time 170.18846654891968
+Upper Bound: 68.32762747176746
+c 16
+choice 5
+total time 1627.752008676529
+Upper Bound: 157.17937682025283
+c 24
+choice 5
+total time 8116.220089912415
+Upper Bound: 254.60652224140009
+c 32
+choice 5
+total time 10090.99290895462
+Upper Bound: 357.6664717633781
+
+c 8
+choice 4
+total time 188.28856086730957
+Upper Bound: 68.67956200722735
+c 16
+choice 4
+total time 2316.353262424469
+Upper Bound: 159.1408335089438
+c 24
+choice 4
+total time 12898.728015422821
+Upper Bound: 258.99794593692593
+c 32
+choice 4
+total time 13620.32498383522
+Upper Bound: 365.7394620604164
