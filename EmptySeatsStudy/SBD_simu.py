@@ -80,21 +80,11 @@ def findseats(rand,p1,pj):
             return i
     raise TypeError("Math Wrong")
 
-def choose_choice(choice,c):
-    if choice==0:
-        a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice==1:
-        a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 2:
-        a1, a2, a3, b, tau = cases.aw_seats(c)
-    return a1, a2, a3, b, tau
-
 def Simulation(i):
 
     #np.random.seed(42)
     p3num = 0
     T=c*2
-    a1, a2, a3, b, tau=choose_choice(choice,c)
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
     p2 = cp.Variable(1, name="p2")

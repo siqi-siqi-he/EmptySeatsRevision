@@ -68,7 +68,6 @@ def read(c,choice):
 
     return dual
 
-
 def findseats(rand,p1,pj):
     sum=p1
     for i in range(len(pj)):
@@ -94,7 +93,6 @@ def Simulation(i):
     Revenue=0
 
     for t in range(T,0,-1):
-
         folder_path = "EmptySeatsStudy/RandomNumbers"
         file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + "_DLPbasic.txt"
         file_path = f"{folder_path}/{file_name}"
