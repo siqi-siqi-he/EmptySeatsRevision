@@ -33,7 +33,7 @@ SBD_ke_simu=fill(np.array([64.13492400371939,144.6330699263746,228.8885377681499
 DBD_simu=fill(np.array([64.45809051095915,143.35673062213235,227.62414229682327,323.6187261277688,426.93141009009065,522.5696358501605]))
 DBD_ke_simu=fill(np.array([64.45641323136032,143.43540471957166,225.21941510947264,323.5581634821159]))
 aALP_simu=fill(np.array([61.78427238957758, 138.61018319345382,226.14938995316416, 320.5578006315373, 421.05821247178477, 516.9756549928264]))
-sbADP_simu=fill(np.array([64.24429505,143.5083651,207.1127125,303.1144468,488.4390255,702.6241617,598.6003484,805.3462068]))#done,10 #done
+sbADP_simu=fill(np.array([64.1578314284102,143.68968166407,229.373680806477,323.793226575349,427.686615104282,525.812217162104,618.025424670345,728.125643263087]))#done,10 #done
 DLP_simu=fill(np.array([61.42340582807179,138.77384748603984,225.31256181267935,319.40060639730126,419.9542325879878,515.679796399494,611.4473875845814,715.54296515527,814.386362157405,924.9763364853288])) #done
 
 #pricing policies
@@ -45,7 +45,7 @@ plt.plot(x, SBD_ke_simu/SBD_UB, label='Policy SDPD-Benchmark',color='orange', ma
 plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP_simu/SBD_UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=100)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=100)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_UB/SBD_UB, label='UB SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, DBD_UB/SBD_UB, label='UB DPD',color='lightsteelblue', marker='s', markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, SBDb_UB/SBD_UB, label='UB SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
@@ -72,7 +72,7 @@ SBD_ke_simu=fill(np.array([64.33205266756296,145.18591339173017,230.604210395331
 DBD_simu=fill(np.array([65.05083854903685,144.0057210516991,229.7121247309898,325.7704926225174,430.304856632932]))
 DBD_ke_simu=fill(np.array([65.01550890761612,143.97220255866603,225.97091928164133,325.7547260396516]))
 aALP_simu=fill(np.array([62.07747180347792,140.36114203554246,227.65609499276587, 322.803462225222, 423.4051142872868,519.9610140033883]))
-sbADP_simu=fill(np.array([64.49672941,144.5956576,209.9636685,306.1695418,493.7417763,708.2145221,601.1257444,797.1170085]))
+sbADP_simu=fill(np.array([64.4151052058788,144.50850358191,230.586669160198,326.053118170674,429.823336985362,529.910204095445,621.425482090097,732.700751430066,831.607427151387]))
 DLP_simu=fill(np.array([61.82903035086845,139.98436266670598,226.95453511006673,321.7007977616657,422.6028381149527,519.1756560576766,616.2971665792353,719.8185365743251,820.7219294325531,930.8937186940685]))
 
 plt.figure(figsize=(10, 6))
@@ -83,7 +83,7 @@ plt.plot(x, SBD_ke_simu/SBD_UB, label='Policy SDPD-Benchmark',color='orange', ma
 plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP_simu/SBD_UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_UB/SBD_UB, label='UB SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, DBD_UB/SBD_UB, label='UB DPD',color='lightsteelblue', marker='s', markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, SBDb_UB/SBD_UB, label='UB SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
@@ -110,7 +110,7 @@ SBD_ke_simu=fill(np.array([64.27717819255412,145.93353891466737,232.724668244119
 DBD_simu=fill(np.array([64.90404381916471,144.70667822365897,232.03290941674229,330.4564738149191,440.15818282369617]))
 DBD_ke_simu=fill(np.array([64.80777907288238,144.80001390304696,228.9944048354347,330.5568757934293]))
 aALP_simu=fill(np.array([62.086445641567764,140.7567224599399,229.70741491852507,327.59495025447677,432.14190889441284]))
-sbADP_simu=fill(np.array([49.78824925,145.3247069,213.2878257,313.8770599,484.9166528,620.5563582,693.5898398,578.9596915]))
+sbADP_simu=fill(np.array([49.7882492486376,145.41590384344,233.184040071526,331.798679670414,439.713012663621,544.853593147587,645.286261259387,760.718353808726,866.942918796838]))
 DLP_simu=fill(np.array([61.82121816182555,140.3993730896393,229.28901692312252,326.9326027370243,431.84158643394056,533.1170004257158,637.013406882737,748.578756606833,857.3097408468957,978.5052961735919]))
 
 
@@ -122,7 +122,7 @@ plt.plot(x, SBD_ke_simu/SBD_UB, label='Policy SDPD-Benchmark',color='orange', ma
 plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP_simu/SBD_UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_UB/SBD_UB, label='UB SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, DBD_UB/SBD_UB, label='UB DPD',color='lightsteelblue', marker='s', markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
 plt.plot(x, SBDb_UB/SBD_UB, label='UB SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)

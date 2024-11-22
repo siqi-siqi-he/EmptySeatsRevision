@@ -227,7 +227,7 @@ for step in range(51):
     a3=[0.1*step for i in range(len(a3))]
     means[step], vars[step],p3[step]=run_Simulator()
 
-folder_path = "DP"
+folder_path = "EmptySeatsStudy/DP"
 file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, means)
