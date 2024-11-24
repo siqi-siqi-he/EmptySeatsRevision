@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import docplex
 from docplex.mp.model import Model
 import cases as cases
@@ -112,6 +111,10 @@ class BBNode_till_end():
                                          y=y_vars_r)
             if bestres_r > 1e15:
                 bestres_r = res_r
+                node.res_r = res_r
+                node.bool_vars_r = bool_vars_r
+                node.y_vars_r = y_vars_r
+                bestnode = node
             if res<bestres_r:
                 continue
             if res_r >= bestres_r:
@@ -437,6 +440,12 @@ def subproblem(v, w, theta, t, type):
         y0 = sol.y_vars[0].value
     else:
         x0 = sol.bool_vars_r
+        print(x0)
+        print(sol.y_vars_r)
+        print(sol.bool_vars)
+        print(sol.y_vars)
+        print(p10)
+        print(res)
         y0 = sol.y_vars_r[0]
     obj_value = res
     return p10, p20, p30, x0, y0, obj_value
