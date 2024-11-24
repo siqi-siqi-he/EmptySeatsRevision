@@ -214,7 +214,7 @@ for j in range(1,6):
             rand=random[:,i]
             results[i-num_sim]=Simulation(rand)
 
-        directory = "simu_results/DLP"
+        directory = "results/ADP"
         os.makedirs(directory, exist_ok=True)
         full_path = directory + "/"+str(choice)+str(c)+"CRN.txt"
         np.savetxt(full_path, results)
