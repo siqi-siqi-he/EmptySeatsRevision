@@ -10,6 +10,7 @@ import warnings
 import copy
 from heapq import *
 import itertools
+import os
 
 counter = itertools.count()
 
@@ -440,18 +441,14 @@ def subproblem(v, w, theta, t, type):
         y0 = sol.y_vars[0].value
     else:
         x0 = sol.bool_vars_r
-        print(x0)
-        print(sol.y_vars_r)
-        print(sol.bool_vars)
-        print(sol.y_vars)
-        print(p10)
-        print(res)
         y0 = sol.y_vars_r[0]
     obj_value = res
     return p10, p20, p30, x0, y0, obj_value
 
 def save(v, w, theta, c, choice):
     folder_path = "EmptySeatsStudy (experiments)/ADP"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     file_name = "v_value_choice" + str(choice) + "capacity" + str(c) + "step"+str(step)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, v)
@@ -598,6 +595,9 @@ for step in range(51):
     results[step]=ADP()
 
 folder_path = "EmptySeatsStudy (experiments)/ADP"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
+
 np.savetxt(file_path, results)
