@@ -132,7 +132,7 @@ plt.plot(x, aALP/SBD_UB, label='UB AFF',color='black', marker='^', linestyle='-'
 plt.plot(x, DLPflex/SBD_UB, label='UB DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 
 plt.xticks(x)
-plt.ylim(0.75, 1.2)
+plt.ylim(0.85, 1.2)
 plt.xlabel('Bus Size',fontsize=14)
 plt.ylabel('Revenue',fontsize=14)
 plt.title('Pricing Policies for hom_de_in_seats')
