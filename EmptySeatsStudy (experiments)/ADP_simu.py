@@ -68,7 +68,7 @@ def r3(j,p1,p2,p3,a1, a2, a3, b, tau):
     return result
 
 def read(c,choice):
-    folder_path = "ADP"
+    folder_path = "EmptySeatsStudy (experiments)/ADP"
     file_name = "v_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     v = np.loadtxt(file_path)
@@ -113,8 +113,8 @@ def Simulation(i):
 
     for t in range(T,0,-1):
 
-        folder_path = "RandomNumbers"
-        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t"+str(t)+"_DLPbasic.txt"
+        folder_path = "EmptySeatsStudy (experiments)/RandomNumbers"
+        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t"+str(t)+".txt"
         file_path = f"{folder_path}/{file_name}"
         random = np.loadtxt(file_path)
         objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 + V(x, y - 1, t - 1, c,
@@ -247,7 +247,7 @@ for step in range(51):
     a3=[0.1*step for i in range(len(a3))]
     means[step], vars[step], p3[step]=run_Simulator()
 
-folder_path = "ADP"
+folder_path = "EmptySeatsStudy (experiments)/ADP"
 file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, means)
