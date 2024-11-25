@@ -1,6 +1,6 @@
 import cvxpy as cp
 import numpy as np
-import decomposition.Branch_Bound as BB
+import Branch_Bound as BB
 import cases as cases
 import math
 import time
@@ -178,10 +178,10 @@ def computeDP(choice):
                 vars = {p0[0], p2[0], p3[0]}
                 func = lambda p0, p10, p20, p30, x: obj_func1(v, w, theta, t, p0, p10, p20, p30, x, y, V)
                 ite = 1000
-                root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
+                root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
                                      p0_vars={p0}, p1_vars={p1},
                                      p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func)
-                res, sol = root.bbsolve(ite)
+                res, sol = root.bbsolve()
 
                 p10 = np.squeeze([v.value for v in sol.p1_vars])
                 p20 = [v.value for v in sol.p2j_vars]
@@ -226,10 +226,10 @@ def computeDP(choice):
                 vars = {p0[0], p2[0], p3[0]}
                 func = lambda p0, p10, p20, p30, x: obj_func2(v, w, theta, t, p0, p10, p20, p30, x, y, V)
                 ite = 1000
-                root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
+                root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
                                      p0_vars={p0}, p1_vars={p1},
                                      p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func)
-                res, sol = root.bbsolve(ite)
+                res, sol = root.bbsolve()
 
                 p10 = np.squeeze([v.value for v in sol.p1_vars])
                 p20 = [v.value for v in sol.p2j_vars]
