@@ -10,7 +10,7 @@ def generate_random_files():
         file_name = os.path.join(folder_name, f"randomnumbers_sim{i}.txt")  # Create file name
         with open(file_name, "w") as file:
             # Generate 100 random numbers between 0 and 1
-            random_numbers = [random.uniform(0, 1) for _ in range(16)]
+            random_numbers = [random.uniform(0, 1) for _ in range(20)]
             # Write each number to the file on a new line
             file.write("\n".join(map(str, random_numbers)))
             print(f"Created {file_name} with 100 random numbers.")
