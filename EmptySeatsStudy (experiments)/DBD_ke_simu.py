@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-import ADP_NL_cases as cases
+import cases as cases
 import cvxpy as cp
 import math
 from cvxpy.error import SolverError
@@ -102,7 +102,7 @@ def Simulation(ii):
     for t in range(T,0,-1):
 
         folder_path = "RandomNumbers"
-        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + "_DLPbasic.txt"
+        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + ".txt"
         file_path = f"{folder_path}/{file_name}"
         random = np.loadtxt(file_path)
 
