@@ -69,14 +69,14 @@ def r3(j, p1, p2, p3, a1, a2, a3, b, tau):
 def read(c, choice):
     V = np.full((c, c * 2 + 1, 2), 0.0)
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "SBD"
     for i in range(c):
         file_name = "SBD_NL_ke_DPtable" + str(choice) + "capacity" + str(c) + "compo" + str(i) + "step" + str(
             step) + ".txt"
         file_path = f"{folder_path}/{file_name}"
         V[i, :, :] = np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "SBD"
     file_name = "SBD_NL_DPtable" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     Vy = np.loadtxt(file_path)
@@ -110,8 +110,8 @@ def Simulation(ii):
     Revenue = 0
     V, Vy = read(c, choice)
     for t in range(T, 0, -1):
-        folder_path = "EmptySeatsStudy/RandomNumbers"
-        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + "_DLPbasic.txt"
+        folder_path = "RandomNumbers"
+        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + ".txt"
         file_path = f"{folder_path}/{file_name}"
         random = np.loadtxt(file_path)
 
@@ -255,7 +255,7 @@ for step in range(51):
     a3=[0.1*step for i in range(len(a3))]
     means[step], vars[step],p3[step]=run_Simulator()
 
-folder_path = "EmptySeatsStudy/SBD"
+folder_path = "SBD"
 file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, means)

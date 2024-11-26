@@ -201,7 +201,7 @@ def Simulation(random):
 num_sim=100
 mean_size=np.zeros((10,6))
 var_size=np.zeros((10,6))
-for j in range(1,10):
+for j in range(9,10):
     c=j*8
     T=c*2
     folder_path = "RandomNumbers/"+str(c)

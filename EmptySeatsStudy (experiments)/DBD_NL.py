@@ -4,6 +4,8 @@ import Branch_Bound as BB
 import cases as cases
 import math
 import time
+import os
+
 c=8
 T=c*2
 choice=0
@@ -243,6 +245,8 @@ def computeDP(choice):
     print('total time',end-start)
 
     folder_path = "DBD"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     file_name = "DBD_NL_DPtable" + str(choice) + "capacity" + str(c) + "step"+str(step)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, V)
@@ -259,6 +263,8 @@ for step in range(51):
     results[step] = computeDP(0)
 
 folder_path = "DBD"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 file_name = "DBD_NL_results" + str(choice) + "capacity" + str(c) + "2.txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, results)

@@ -5,7 +5,6 @@ import sys
 import time
 import numpy as np
 import cvxpy as cp
-import ADP_NL_cases as cases
 
 counter = itertools.count()
 
