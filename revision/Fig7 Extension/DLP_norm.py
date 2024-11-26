@@ -14,16 +14,6 @@ def UP_t(c, a1, a2, a3, b, tau):
 def DLP_UB(c):
     #for the problem formulation, see DPP in the paper
     start=time.time()
-    if choice == 1:
-        a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice == 2:
-        a1, a2, a3, b, tau = cases.aw_seats(c)
-    elif choice == 3:
-        a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 4:
-        a1, a2, a3, b, tau = cases.hom_de_in_seats(c)
-    elif choice == 5:
-        a1, a2, a3, b, tau = cases.hom_hom_in_seats(c)
 
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
@@ -65,22 +55,47 @@ def DLP_UB(c):
         dual[j]=constraints[j].dual_value
     d_temp=constraints[c].dual_value
     dual[c]=d_temp[0]
-    folder_path = "SBD_NL"
+    folder_path = "revision/Fig7 Extension/DLP_NL"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-    file_name = "DLPnorm" + str(choice) + "capacity" + str(c) + ".txt"
+    file_name = "DLPnorm" + str(preference) + "a0" + str(a0) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, dual)
 
-    return end-start
+    return subp.value
 
 
 eps = 1e-5
-results=[0]*11
+results=np.zeros((3,5))
 c=8
 T=16
-for choice in range(1,4):
-    for a0 in range(-1,1.5,0.5):
+a1, a2, a3, b, tau = cases.homo_seats(c)
+folder_path="revision/Fig7 Extension/AveragePrices"
+for preference in range(3):
+    #high, medium, low
+    #+-0.2
+    for strength in range(5):
+        a0=strength*0.5-1
+        if preference==0:
+            file_name="a1_a0_"+str(a0)+"_a3decr0.2.txt"
+            file_path = f"{folder_path}/{file_name}"
+            a1=np.loadtxt(file_path)
+            file_name="a2_a0_"+str(a0)+"_a3decr0.2.txt"
+            file_path = f"{folder_path}/{file_name}"
+            a2=np.loadtxt(file_path)
+            a3=[0.4]*8
+        if preference==1:
+            a1=0.2
+            a3=[0.6]*8
+            a2=[0.4]*8
+        if preference==2:
+            file_name="a1_a0_"+str(a0)+"_a3incr0.2.txt"
+            file_path = f"{folder_path}/{file_name}"
+            a1=np.loadtxt(file_path)
+            file_name="a2_a0_"+str(a0)+"_a3incr0.2.txt"
+            file_path = f"{folder_path}/{file_name}"
+            a2=np.loadtxt(file_path)
+            a3=[0.8]*8
         print(a0)
-        results[i]=DLP_UB(c)
+        results[preference][strength]=DLP_UB(c)
     print(results)
