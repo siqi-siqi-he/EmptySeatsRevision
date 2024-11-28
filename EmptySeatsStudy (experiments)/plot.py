@@ -5,28 +5,28 @@ choice=0
 c=8
 
 def read():
-    folder_path = "EmptySeatsStudy/ADP"
+    folder_path = "EmptySeatsStudy (experiments)/ADP"
     file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP = np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/ADP"
+    folder_path = "EmptySeatsStudy (experiments)/ADP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/DBD"
+    folder_path = "EmptySeatsStudy (experiments)/DBD"
     file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/DBD"
+    folder_path = "EmptySeatsStudy (experiments)/DBD"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/DBD"
-    file_name = "DBD_NL_results0capacity" + str(c) + ".txt"
+    folder_path = "EmptySeatsStudy (experiments)/DBD"
+    file_name = "DBD_NL_results0capacity" + str(c) + "2.txt"
     file_path = f"{folder_path}/{file_name}"
     DBD=np.loadtxt(file_path)
 
@@ -34,22 +34,22 @@ def read():
         if DBD_ke[i]>DBD[i]:
             DBD_ke[i] = DBD[i]
 
-    folder_path = "EmptySeatsStudy/DBD"
+    folder_path = "EmptySeatsStudy (experiments)/DBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "EmptySeatsStudy (experiments)/SBD"
     file_name = "SBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "EmptySeatsStudy (experiments)/SBD"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "EmptySeatsStudy (experiments)/SBD"
     file_name = "SBD_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD=np.loadtxt(file_path)
@@ -58,12 +58,12 @@ def read():
         if SBD_ke[i]>SBD[i]:
             SBD_ke[i] = SBD[i]
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "EmptySeatsStudy (experiments)/SBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/DP"
+    folder_path = "EmptySeatsStudy (experiments)/DP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DP_simu=np.loadtxt(file_path)
@@ -96,8 +96,8 @@ plt.plot(x, DBD_simu, label='Policy DPD',color='lightsteelblue', marker='s', lin
 plt.plot(x, DBD_ke_simu, label='Policy DPD-Benchmark',color='yellow', marker='s', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, ADP_simu, label='Policy AFF',color='black', marker='x', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, DP_simu, label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
-plt.plot(x, back_simu, label='Policy BE',color='cyan', marker='^', linestyle=':', linewidth=1.5, markersize=5)
+#plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
+#plt.plot(x, back_simu, label='Policy BE',color='cyan', marker='^', linestyle=':', linewidth=1.5, markersize=5)
 
 x0=[i*0.5 for i in range(11)]
 plt.xticks(x0)
