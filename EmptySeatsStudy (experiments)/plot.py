@@ -68,14 +68,18 @@ def read():
     file_path = f"{folder_path}/{file_name}"
     DP_simu=np.loadtxt(file_path)
 
-    return SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu
+    folder_path = "EmptySeatsStudy (experiments)/sbADP"
+    file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
+    file_path = f"{folder_path}/{file_name}"
+    sbADP_simu=np.loadtxt(file_path)
+
+    return SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu, sbADP_simu
 
 
 width=1.5
 marksize=5
-SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu=read()
+SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu, sbADP_simu=read()
 
-sbADP_simu=[65.05969484,65.18527797,65.08791974,64.96199235,64.80211349,64.91616445,65.05971619,65.18526183,65.18093926,65.23375297,65.5039493,65.41007793,65.39611551,65.67994812,65.70755424,66.03200204,66.06210471,65.95377501,66.20231324,66.36810825,66.39196971,66.52637361,66.57511581,66.79443883,66.9093705,67.09599149,67.44124542,67.43079661,67.55950003,67.89337703,68.46161116,68.57675325,68.58347982,68.7843082,69.18060082,69.23304694,69.25940226,69.18431506,69.66343253,69.98609761,70.18649126,70.51725179,70.88320463,71.28645756,71.21249996,71.43837228,71.63856816,71.97809992,72.1463316,72.36908837,72.76262396]
 plt.figure(figsize=(10, 6))
 plt.rcParams['font.size'] = 14
 x=[i*0.1 for i in range(51)]
@@ -96,7 +100,7 @@ plt.plot(x, DBD_simu, label='Policy DPD',color='lightsteelblue', marker='s', lin
 plt.plot(x, DBD_ke_simu, label='Policy DPD-Benchmark',color='yellow', marker='s', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, ADP_simu, label='Policy AFF',color='black', marker='x', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, DP_simu, label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
+plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
 #plt.plot(x, back_simu, label='Policy BE',color='cyan', marker='^', linestyle=':', linewidth=1.5, markersize=5)
 
 x0=[i*0.5 for i in range(11)]

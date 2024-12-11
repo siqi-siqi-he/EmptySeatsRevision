@@ -102,7 +102,7 @@ def getnewstate(x, y, eps, VFA, state, w, ai):
                 (xstar*x)[::2]])
     return statenew
 
-def simulation_coeffs_V5(nsim, dec, T, c, coeffs, state, a0, a1, a2, a3, b1, b2, b3, tau1, tau2, tau3, eps, VFA, w, ai):
+def simulation_coeffs_V5(nsim, T, c, coeffs, state, a0, a1, a2, a3, b1, b2, b3, tau1, tau2, tau3, eps, VFA, w, ai):
     rev_nt = np.zeros((nsim, T))
     policy = np.zeros((nsim, T, 2 * c + 1))
     tickets_n = np.zeros((nsim, 4))
@@ -167,7 +167,7 @@ def simulation_coeffs_V5(nsim, dec, T, c, coeffs, state, a0, a1, a2, a3, b1, b2,
                 fp1, fp2, fp3, fp2j, fp3j, r1, r2j, r3j, ofv = opt_price_BADP_returnProbs_coeffs(
                     c, x, y, coeffs, state, t2, a0, a1, a2, a3, b1, b2, b3, tau1, tau2, tau3, eps, VFA, w, ai)
                 policy_local[t, :] = np.concatenate(([r1], r2j, r3j))
-                x, y, rev, cTickets, cSeats2, cSeats3 = calc_decision_V5(fp1, fp2j, fp3j, r1, r2j, r3j, dec, x, y, t, n, cTickets, cSeats2, cSeats3)
+                x, y, rev, cTickets, cSeats2, cSeats3 = calc_decision_V5(fp1, fp2j, fp3j, r1, r2j, r3j, x, y, t, n, cTickets, cSeats2, cSeats3)
                 state = getnewstate(x, y, eps, VFA, state, w, ai)
                 rev_nt_local[t] = max(0, rev)
 
@@ -518,9 +518,13 @@ def opt_price_BADP_returnProbs_coeffs(c, x, y, coeffs, state, t, a0, a1, a2, a3,
     return fp1, fp2, fp3, fp2j, fp3j, r1, r2j, r3j, ofv
 
 
-def calc_decision_V5(fp1, fp2j, fp3j, r1, r2j, r3j, dec, x, y, t, n, cTickets, cSeats2, cSeats3):
+def calc_decision_V5(fp1, fp2j, fp3j, r1, r2j, r3j, x, y, t, n, cTickets, cSeats2, cSeats3):
+    folder_path = "EmptySeatsStudy (experiments)/RandomNumbers"
+    file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + ".txt"
+    file_path = f"{folder_path}/{file_name}"
+    dec = np.loadtxt(file_path)
     # Let the customer decide
-    if dec[t, n] > (fp1 + np.sum(fp2j) + np.sum(fp3j)):
+    if dec[n] > (fp1 + np.sum(fp2j) + np.sum(fp3j)):
         # Leave without a ticket
         cTickets[0] += 1
         rev = 0
@@ -528,7 +532,7 @@ def calc_decision_V5(fp1, fp2j, fp3j, r1, r2j, r3j, dec, x, y, t, n, cTickets, c
     else:
         concat = np.concatenate(([fp1], fp2j.flatten(), fp3j.flatten()))
         cumsumConcat = np.cumsum(concat)
-        lower = dec[t, n] < cumsumConcat
+        lower = dec[n] < cumsumConcat
         ind = np.where(lower)[0][0]
 
         if ind == 0:
@@ -573,16 +577,22 @@ def find_empty_row(file_path, sheet):
         return len(df) + 1
 
 # Load data
-M = 200
+M = 100
 nsim = 100
 choice = 2
-VFA = 4
+VFA = 0
+c=8
 mode = 'cvx'
-for choice in [0,1,2]:
-    for M in [200]:
-        for c in range(8, 81, 8):
-            file_name = f'{c}/BADP_{mode}_choice{choice}_VFA{VFA}_M{M}_capacity{c}.mat'
-            mat_data = load_mat_file(file_name)
+for choice in [0]:
+    for M in [100]:
+        for a3j in range(51):
+            a3=[a3j*0.1]*c
+            folder_path = "EmptySeatsStudy (experiments)/sbADP"
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+            file_name = f"sbADP_learning{choice}capacity{c}a3{a3j*0.1}.mat"
+            file_path = os.path.join(folder_path, file_name)
+            mat_data = load_mat_file(file_path)
         
             coeffs = mat_data['coeffs']
             t_training = mat_data['t_training']
@@ -590,7 +600,7 @@ for choice in [0,1,2]:
             a0 = mat_data['a0'][0][0]
             a1 = mat_data['a1'][0][0]
             a2 = mat_data['a2'][0]
-            a3 = mat_data['a3'][0]
+            # a3 = mat_data['a3'][0]
             b1 = mat_data['b1'][0][0]
             b2 = mat_data['b2'][0][0]
             b3 = mat_data['b3'][0][0]
@@ -602,76 +612,20 @@ for choice in [0,1,2]:
             eps = 0  # Extract scalar from nested array
             w = mat_data['w'][0][0]
             ai = mat_data['ai'][0][0]
-        
-            fname = f'C:\\Users\\siqhe\\PycharmProjects\\pythonProject2\\decomposition_CRN\\RandomNumbers\\{c}\\rand.txt'
-            fname = f"C:\\Users\\davinah\\Dropbox\\Empty_Seats\\Programming\\CRNSiqi\\RandomNumbers\\{c}\\rand.txt"
-            dec = np.loadtxt(fname)
-            # # Get random decision variables, if not loaded from external data
-            # np.random.seed(9876543)
-            # dec = sample_dec(T + 1, nsim)
-        
-            # Simulate booking horizons
-            tstart = time.time()
-            rev_nt, policy, tickets_n, seats2_n, seats3_n = simulation_coeffs_V5(nsim, dec, T, c, coeffs, [], a0, a1, a2, a3, b1, b2, b3, tau1, tau2, tau3, eps, VFA, w, ai)
-            tend = time.time() - tstart
+
+            rev_nt, policy, tickets_n, seats2_n, seats3_n = simulation_coeffs_V5(nsim, T, c, coeffs, [], a0, a1, a2, a3, b1, b2, b3, tau1, tau2, tau3, eps, VFA, w, ai)
+            # tend = time.time() - tstart
             rev = np.mean(np.sum(rev_nt, axis=1))
             stderr = np.std(np.sum(rev_nt, axis=1))
-        
-            # Save data
-            file_name = f'{c}/BADP_{mode}_choice{choice}_VFA{VFA}_M{M}_capacity{c}_simulation{nsim}.mat'
-            data_to_save = {
-                'coeffs': coeffs,
-                't_training': t_training,
-                'Vroot': Vroot,
-                'rev_nt': rev_nt,
-                'rev': rev,
-                'policy': policy,
-                'a0': a0,
-                'a1': a1,
-                'a2': a2,
-                'a3': a3,
-                'b1': b1,
-                'b2': b2,
-                'b3': b3,
-                'tau0': tau0,
-                'tau1': tau1,
-                'tau2': tau2,
-                'tau3': tau3,
-                'c': c,
-                'T': T,
-                'nsim': nsim,
-                'dec': dec,
-                'tickets_n': tickets_n,
-                'seats2_n': seats2_n,
-                'seats3_n': seats3_n,
-                'M': M
-            }
-            save_mat_file(file_name, data_to_save)
-        
-            # Save results to Excel        
-            filename = 'Results.xlsx'
-            if choice == 0:
-                sheet = 0
-                sheet_name = 'Homogeneous'
-            elif choice == 1:
-                sheet = 1
-                sheet_name = 'AisleWindow'
-            elif choice == 2:
-                sheet = 2
-                sheet_name = 'Heterogeneous'
-                
-            i = find_empty_row(filename, sheet)
-            with pd.ExcelWriter(filename, mode='a', if_sheet_exists='overlay') as writer:
-                 data = {
-                     'A': [c],
-                     'B': Vroot[0],
-                     'C': t_training[0],
-                     'D': [M],
-                     'E': [nsim],
-                     'F': [rev],
-                     'g': [stderr],
-                     'h': [mode],
-                     'I': [VFA]
-                 }
-                 df = pd.DataFrame(data, index=[i])
-                 df.to_excel(writer, sheet_name=sheet_name, startrow=i, header=False)
+            seats3 = np.mean(np.sum(seats3_n, axis=1))
+
+            folder_path = "EmptySeatsStudy (experiments)/sbADP"
+            file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
+            file_path = f"{folder_path}/{file_name}"
+            np.savetxt(file_path, rev)
+            file_name = "simu_vars_choice" + str(choice) + "capacity" + str(c) + ".txt"
+            file_path = f"{folder_path}/{file_name}"
+            np.savetxt(file_path, stderr)
+            file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
+            file_path = f"{folder_path}/{file_name}"
+            np.savetxt(file_path, seats3)

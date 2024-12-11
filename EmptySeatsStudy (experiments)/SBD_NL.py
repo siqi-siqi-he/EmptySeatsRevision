@@ -16,7 +16,7 @@ def UP_t(c, a1, a2, a3, b, tau):
     return result
 
 def read(c,choice):
-    folder_path = "DP"
+    folder_path = "EmptySeatsStudy (experiments)/DP"
     file_name = "DLPnorm" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     w = np.loadtxt(file_path)
@@ -166,46 +166,46 @@ def computeDP():
                                + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0) \
                                + p0 * V[t - 1, y]
 
-            constraints = [p1 <= 1,
-                           p1 >= eps,
-                           p0 >= eps,
-                           p2 >= eps,
-                           p2 <= 1,
-                           p3 >= eps,
-                           p3 <= 1,
-                           p1 + p0 + p2 + p3 == 1,
-                           p2 == cp.sum(p2j),
-                           p3 == cp.sum(p3j),
-                           p0 >= 1 - UP_t(c, a1, a2, a3, b, tau),
-                           p2j <= 1,
-                           p3j <= 1,
-                           p2j >= eps / c,
-                           p3j >= eps / c]
-            objective = cp.Maximize(objective_cp)
+                constraints = [p1 <= 1,
+                            p1 >= eps,
+                            p0 >= eps,
+                            p2 >= eps,
+                            p2 <= 1,
+                            p3 >= eps,
+                            p3 <= 1,
+                            p1 + p0 + p2 + p3 == 1,
+                            p2 == cp.sum(p2j),
+                            p3 == cp.sum(p3j),
+                            p0 >= 1 - UP_t(c, a1, a2, a3, b, tau),
+                            p2j <= 1,
+                            p3j <= 1,
+                            p2j >= eps / c,
+                            p3j >= eps / c]
+                objective = cp.Maximize(objective_cp)
 
-            subp = cp.Problem(objective, constraints)
+                subp = cp.Problem(objective, constraints)
 
-            try:
-                subp.solve(solver=cp.MOSEK)
-            except cp.error.SolverError as e:
-                print(e)
                 try:
-                    subp.solve(solver=cp.SCS)
+                    subp.solve(solver=cp.MOSEK)
                 except cp.error.SolverError as e:
                     print(e)
-                    subp.solve(solver=cp.ECOS)
+                    try:
+                        subp.solve(solver=cp.SCS)
+                    except cp.error.SolverError as e:
+                        print(e)
+                        subp.solve(solver=cp.ECOS)
 
-            p00 = p0[0].value
-            p10 = p1[0].value
-            p20 = p2j.value
-            p30 = p3j.value
-            V[t, y] = subp.value
+                p00 = p0[0].value
+                p10 = p1[0].value
+                p20 = p2j.value
+                p30 = p3j.value
+                V[t, y] = subp.value
 
     end=time.time()
     print(V)
     print('total time',end-start)
 
-    folder_path = "SBD"
+    folder_path = "EmptySeatsStudy (experiments)/SBD"
     file_name = "SBD_NL_DPtable" + str(choice) + "capacity" + str(c) + "step"+str(step)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, V)
@@ -219,7 +219,7 @@ for step in range(51):
     a3=[0.1*step for i in range(len(a3))]
     results[step]=computeDP()
 
-folder_path = "SBD"
+folder_path = "EmptySeatsStudy (experiments)/SBD"
 file_name = "SBD_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, results)
