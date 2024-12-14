@@ -201,8 +201,8 @@ def computeDP(choice):
                                    p3j <= x + eps / c,
                                    p3j <=y-1+eps/c]
 
-                    for j in range(c):
-                        constraints = constraints + [p3j[j] <= x[j - (-1) ** (j + 1)] + eps / c]
+                    for k in range(c):
+                        constraints = constraints + [p3j[k] <= x[k- (-1) ** (k+ 1)] + eps / c]
 
                     bool_vars = [x[i] for i in range(c)]
                     vars = {p0[0], p2[0], p3[0]}
@@ -225,9 +225,7 @@ def computeDP(choice):
                         print(e)
                         print(sol.y_vars_r[0])
                     #consider y to be 0
-                    res_temp=sum(v[t-1,:]-v[t,:])-(v[t-1,i]-v[t,i])
-                    if res_temp>res:
-                        res=res_temp
+
                     V[t, 0] = res
                     #print(res)
                 else:
@@ -284,9 +282,7 @@ def computeDP(choice):
                     p30 = [v.value for v in sol.p3j_vars]
                     x0 = sol.bool_vars_r
                     y0 = sol.y_vars_r[0]
-                    res_temp = sum(v[t - 1, :] - v[t, :]) - (v[t - 1, i] - v[t, i])
-                    if res_temp > res:
-                        res = res_temp
+
                     V[t, 1] = res
                     #print(res)
 
