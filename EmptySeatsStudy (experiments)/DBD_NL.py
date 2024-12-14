@@ -151,7 +151,7 @@ def computeDP(choice):
 
     start=time.time()
     for t in range(1,T+1):
-        V[t, 0] = V[t - 1, 0] + sum((v[t, j] - v[t - 1, j]) for j in range(c))
+        V[t, 0] = V[t - 1, 0]
         for y in range(1,c+1):
             if y==1:
                 objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1+p1*V[t-1,y-1] \
