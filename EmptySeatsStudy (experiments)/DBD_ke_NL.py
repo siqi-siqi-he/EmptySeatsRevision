@@ -219,12 +219,7 @@ def computeDP(choice):
                     p20 = [v.value for v in sol.p2j_vars]
                     p30 = [v.value for v in sol.p3j_vars]
                     x0 = sol.bool_vars_r
-                    try:
-                        y0=sol.y_vars_r[0]
-                    except IndexError as e:
-                        print(e)
-                        print(sol.y_vars_r[0])
-                    #consider y to be 0
+                    y0=sol.y_vars_r[0]
 
                     V[t, 0] = res
                     #print(res)
@@ -256,7 +251,7 @@ def computeDP(choice):
                                    x <= 1,
                                    y <= 2,
                                    y >= 1,
-                                   x[i]==0,
+                                   x[i]==1,
                                    p2j <= 1,
                                    p3j <= 1,
                                    p2j >= eps / c,
