@@ -136,12 +136,6 @@ def obj_func1(v, w, theta, t, p0, p10, p20, p30, x, y,V, i):
 
 def computeDP(choice):
     UB=1000000
-    if choice == 0:
-        a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice == 1:
-        a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 2:
-        a1, a2, a3, b, tau = cases.aw_seats(c)
     eps = 1e-5
 
     #ALP problem
@@ -263,7 +257,7 @@ def computeDP(choice):
                                    x <= 1,
                                    y <= 2,
                                    y >= 1,
-                                   x[i]==0,
+                                   x[i]==1,
                                    p2j <= 1,
                                    p3j <= 1,
                                    p2j >= eps / c,
