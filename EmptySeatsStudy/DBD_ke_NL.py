@@ -1,7 +1,7 @@
 import cvxpy as cp
 import numpy as np
-import decomposition.Branch_Bound_y as BB
-import ADP_NL_cases as cases
+import Branch_Bound_y as BB
+import cases as cases
 import math
 import time
 import os
@@ -136,6 +136,7 @@ def obj_func1(v, w, theta, t, p0, p10, p20, p30, x, y,V, i):
 
 def computeDP(choice):
     UB=1000000
+
     eps = 1e-5
 
     #ALP problem
@@ -200,33 +201,26 @@ def computeDP(choice):
                                    p3j <= x + eps / c,
                                    p3j <=y-1+eps/c]
 
-                    for j in range(c):
-                        constraints = constraints + [p3j[j] <= x[j - (-1) ** (j + 1)] + eps / c]
+                    for k in range(c):
+                        constraints = constraints + [p3j[k] <= x[k- (-1) ** (k+ 1)] + eps / c]
 
                     bool_vars = [x[i] for i in range(c)]
                     vars = {p0[0], p2[0], p3[0]}
                     func = lambda p0, p10, p20, p30, x, y: obj_func0(v, w, theta, t, p0, p10, p20, p30, x, y, V, i)
                     ite = 1000
-                    root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp,
+                    root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp,
                                          bool_vars=bool_vars,
                                          p0_vars={p0}, p1_vars={p1},
                                          p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)},
                                          func=func,y_vars=y)
-                    res, sol = root.bbsolve(ite)
+                    res, sol = root.bbsolve()
 
                     p10 = np.squeeze([v.value for v in sol.p1_vars])
                     p20 = [v.value for v in sol.p2j_vars]
                     p30 = [v.value for v in sol.p3j_vars]
                     x0 = sol.bool_vars_r
-                    try:
-                        y0=sol.y_vars_r[0]
-                    except IndexError as e:
-                        print(e)
-                        print(sol.y_vars_r[0])
-                    #consider y to be 0
-                    res_temp=sum(v[t-1,:]-v[t,:])-(v[t-1,i]-v[t,i])
-                    if res_temp>res:
-                        res=res_temp
+                    y0=sol.y_vars_r[0]
+
                     V[t, 0] = res
                     #print(res)
                 else:
@@ -273,19 +267,17 @@ def computeDP(choice):
                     vars = {p0[0], p2[0], p3[0]}
                     func = lambda p0, p10, p20, p30, x, y: obj_func1(v, w, theta, t, p0, p10, p20, p30, x, y, V, i)
                     ite = 1000
-                    root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
+                    root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
                                          p0_vars={p0}, p1_vars={p1},
                                          p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func,y_vars=y)
-                    res, sol = root.bbsolve(ite)
+                    res, sol = root.bbsolve()
 
                     p10 = np.squeeze([v.value for v in sol.p1_vars])
                     p20 = [v.value for v in sol.p2j_vars]
                     p30 = [v.value for v in sol.p3j_vars]
                     x0 = sol.bool_vars_r
                     y0 = sol.y_vars_r[0]
-                    res_temp = sum(v[t - 1, :] - v[t, :]) - (v[t - 1, i] - v[t, i])
-                    if res_temp > res:
-                        res = res_temp
+
                     V[t, 1] = res
                     #print(res)
 
@@ -294,6 +286,8 @@ def computeDP(choice):
         if UB>temp_UB:
             UB=temp_UB
         folder_path = "DBD"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
         file_name = "DBD_NL_ke_DPtable" + str(choice) + "capacity" + str(c) + "compo"+str(i)+ "step"+str(step)+".txt"
         file_path = f"{folder_path}/{file_name}"
         os.makedirs(folder_path, exist_ok=True)
@@ -310,12 +304,14 @@ a1, a2, a3, b, tau = cases.homo_seats(c)
 results=[0]*51
 
 
-for step in range(1):
-    step=50
+for step in range(51):
+
     a3 = [0.1 * step for i in range(len(a3))]
     results[step] = computeDP(0)
 
 folder_path = "DBD"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, results)
