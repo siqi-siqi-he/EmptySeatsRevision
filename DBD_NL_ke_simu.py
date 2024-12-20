@@ -169,6 +169,9 @@ def Simulation(random):
         price1=r1(p10,p2j0,p3j0,a1, a2, a3, b, tau)
         price2=[r2(j,p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
         price3 = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
+        print(price1)
+        print(price2)
+        print(price3)
         if random[t - 1] > p10 + p20 + p30:
             continue
         elif random[t - 1] < p10:
@@ -197,7 +200,7 @@ def Simulation(random):
     return Revenue
 
 
-num_sim=100
+num_sim=3
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
 for j in range(1,6):
@@ -207,7 +210,7 @@ for j in range(1,6):
     file_name = "rand.txt"
     file_path = f"{folder_path}/{file_name}"
     random = np.loadtxt(file_path)
-    for choice in range(3):
+    for choice in range(1):
         a1, a2, a3, b, tau=choose_choice(choice,c)
         results=[0]*num_sim
         for i in range(num_sim,2*num_sim):
@@ -217,7 +220,7 @@ for j in range(1,6):
         directory = "results/DBD_ke"
         os.makedirs(directory, exist_ok=True)
         full_path = directory + "/" + str(choice) + str(c) + "CRN.txt"
-        np.savetxt(full_path, results)
+        #np.savetxt(full_path, results)
 
         mean_size[j-1,choice]=np.mean(results)
         var_size[j-1,choice]=np.var(results)
