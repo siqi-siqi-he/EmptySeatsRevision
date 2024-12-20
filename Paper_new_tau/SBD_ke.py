@@ -225,18 +225,17 @@ def computeDP(choice):
 results=[0]*11
 bounds=[0]*11
 for choice in range(1,4):
-    c=8
     print("choice:", choice)
-    if choice == 1:
-        a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice == 2:
-        a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 3:
-        a1, a2, a3, b, tau = cases.aw_seats(c)
     for i in range(1,11):
         c=i*8
         T=c*2
         print("c:", c)
+        if choice == 1:
+            a1, a2, a3, b, tau = cases.homo_seats(c)
+        elif choice == 2:
+            a1, a2, a3, b, tau = cases.incre_seats(c)
+        elif choice == 3:
+            a1, a2, a3, b, tau = cases.aw_seats(c)
         results[i], bounds[i]=computeDP(choice)
     folder_path = "results"
     if not os.path.exists(folder_path):
