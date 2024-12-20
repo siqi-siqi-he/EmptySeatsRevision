@@ -12,7 +12,7 @@ def UP_t(c, a1, a2, a3, b, tau):
     return result
 
 def read(c,choice):
-    folder_path = "Paper_new_tau/SBD_NL"
+    folder_path = "SBD_NL"
     file_name = "DLPnorm" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     w = np.loadtxt(file_path)
@@ -164,7 +164,7 @@ def computeDP():
     print('total time',end-start)
     UB_SBD_y = V[T, c] + sum(w) - w[c]
     print('Upper bounds:', UB_SBD_y)
-    folder_path = "Paper_new_tau/SBD_NL"
+    folder_path = "SBD_NL"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "SBD_NL_DPtable" + str(choice) + "capacity" + str(c) + ".txt"
@@ -189,7 +189,7 @@ for choice in range(1,4):
         print("c:", c)
         T=c*2
         results[i], bounds[i]=computeDP()
-    folder_path = "Paper_new_tau/results"
+    folder_path = "results"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "runtime_SBD" + str(choice) + "capacity.txt"
