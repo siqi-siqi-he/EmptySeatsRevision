@@ -1,6 +1,6 @@
 import cvxpy as cp
 import numpy as np
-import ADP_NL_cases as cases
+import new_cases as cases
 import math
 import time
 import os
@@ -48,7 +48,7 @@ def DLP_UB(c):
                    p0+p1+p2+p3==1,
                    p2 == cp.sum(p2j),
                    p3 == cp.sum(p3j),
-                   p0 >= 1 - UP_t(c, a1, a2, a3, b, tau)]
+                   p0 >= 0]
 
     subp = cp.Problem(objective, constraints)
 
@@ -60,8 +60,7 @@ def DLP_UB(c):
         dual[j]=constraints[j].dual_value
     d_temp=constraints[c].dual_value
     dual[c]=d_temp[0]
-    if choice<=3:
-        folder_path = "SBD_NL"
+    folder_path = "SBD_NL"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "DLPnorm" + str(choice) + "capacity" + str(c) + ".txt"
@@ -74,7 +73,6 @@ def DLP_UB(c):
 eps = 1e-5
 results=[0]*11
 bounds=[0]*11
-c=8
 for choice in range(1,4):
     for i in range(1,11):
         c=i*8

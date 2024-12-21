@@ -1,6 +1,6 @@
 import cvxpy as cp
 import numpy as np
-import ADP_NL_cases as cases
+import new_cases as cases
 import math
 import time
 import os
@@ -174,7 +174,7 @@ def computeDP():
 
 results=[0]*11
 bounds=[0]*11
-for choice in range(3,4):
+for choice in range(1,4):
     print("choice:", choice)
     for i in range(1,11):
         #this means that we take capacity of bus from 8 to 80
@@ -193,8 +193,8 @@ for choice in range(3,4):
         os.makedirs(folder_path)
     file_name = "runtime_SBD" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, results)
+    #np.savetxt(file_path, results)
     file_name = "UB_SBD" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, bounds)
-    print(results)
+    #print(results)
