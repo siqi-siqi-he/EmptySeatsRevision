@@ -83,10 +83,10 @@ for choice in range(1,4):
     folder_path = "results"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-    file_name = "runtime_DLPnorm" + str(choice) + "capacity.txt"
+    file_name = "runtime_DLPnorm" + str(choice) + "capacity"+str(c)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, results)
-    file_name = "UB_DLPnorm" + str(choice) + "capacity.txt"
+    file_name = "UB_DLPnorm" + str(choice) + "capacity"+str(c)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, bounds)
     print(results)
