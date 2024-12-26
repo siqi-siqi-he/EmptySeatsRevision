@@ -193,7 +193,7 @@ num_sim=100
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
 
-for choice in range(1, 4):
+for choice in range(2, 3):
 
     for j in range(1,11):
         c=j*8
