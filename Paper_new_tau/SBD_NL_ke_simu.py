@@ -206,14 +206,14 @@ def Simulation(random):
 num_sim=100
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
-for j in range(1,11):
-    c=j*8
-    T=c*2
-    folder_path = "RandomNumbers"
-    file_name = "rand.txt"
-    file_path = f"{folder_path}/{file_name}"
-    random = np.loadtxt(file_path)
-    for choice in range(1,4):
+for choice in range(1, 4):
+    for j in range(1,11):
+        c=j*8
+        T=c*2
+        folder_path = "RandomNumbers"
+        file_name = "rand.txt"
+        file_path = f"{folder_path}/{file_name}"
+        random = np.loadtxt(file_path)
         a1, a2, a3, b, tau=choose_choice(choice,c)
         results=[0]*num_sim
         for i in range(num_sim):
@@ -230,7 +230,7 @@ for j in range(1,11):
         print("mean,var:",mean_size[j-1,choice-1],var_size[j-1,choice-1])
     directory = "simu_results"
     os.makedirs(directory, exist_ok=True)
-    full_path = f"{directory}/mean_DLP_simu_choice_{choice}_CRN.txt"
+    full_path = f"{directory}/mean_SBD_NL_ke_simu_choice_{choice}_CRN.txt"
     np.savetxt(full_path, mean_size[:,choice-1])
-    full_path = f"{directory}/var_DLP_simu_choice_{choice}_CRN.txt"
+    full_path = f"{directory}/var_SBD_NL_ke_simu_choice_{choice}_CRN.txt"
     np.savetxt(full_path, var_size[:,choice-1])
