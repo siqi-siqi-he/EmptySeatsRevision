@@ -206,7 +206,7 @@ for choice in range(2, 3):
         results=[0]*num_sim
         for i in range(num_sim):
             rand=random[:,i]
-            results[i-num_sim]=Simulation(rand)
+            results[i]=Simulation(rand)
 
         directory = "simu_results/DLP"
         os.makedirs(directory, exist_ok=True)

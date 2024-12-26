@@ -193,7 +193,7 @@ for choice in range(1,4):
         os.makedirs(folder_path)
     file_name = "runtime_SBD" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    #np.savetxt(file_path, results)
+    np.savetxt(file_path, results)
     file_name = "UB_SBD" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, bounds)
