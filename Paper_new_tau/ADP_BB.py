@@ -1,6 +1,6 @@
 import docplex
 from docplex.mp.model import Model
-import ADP_NL_cases as cases
+import new_cases as cases
 import math
 import time
 import numpy as np
@@ -715,11 +715,11 @@ sig=0.001
 #set the number of processors for parallel computing
 num_processes=16
 #set the capacity c
-c=8
+c=16
 #set the selling horizon days
 T = c * 2
 #set choice
-choice=1
+choice=2
 if choice==1:
     a1, a2, a3, b, tau = cases.homo_seats(c)
 elif choice==2:
