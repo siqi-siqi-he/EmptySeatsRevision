@@ -520,10 +520,7 @@ def execute_subproblem(v, w, theta, t_period, ite,type,c):
 
 def save(v, w, theta, c, choice):
     #the results of affine function are saved
-    if choice<=3:
-        folder_path = "BB_test"
-    else:
-        folder_path = "review/BB_test"
+    folder_path = "ADP"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + ".txt"
@@ -536,58 +533,19 @@ def save(v, w, theta, c, choice):
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, theta)
 
-def write_excel(Z, elapsed_time,total_3, ite_before_3, ite):
-    #the outcome can also be saved to an excel (optional)
-    directory = "BB_test"
-    os.makedirs(directory, exist_ok=True)
-    i=int(3*c/8-1+choice)
-    # Save results to Excel
-    filename = 'Results.xlsx'
-    file_path = os.path.join(directory, filename)
-    sheet = 1
-    if not os.path.exists(file_path):
-        # Create an empty DataFrame
-        df = pd.DataFrame()
-
-        # Write the empty DataFrame to an Excel file
-        df.to_excel(file_path, index=False)
-
-        print(f"{filename} created in {directory} folder.")
-    else:
-        print(f"{filename} already exists in {directory} folder.")
-
-    with pd.ExcelWriter(file_path, mode='a', if_sheet_exists='overlay') as writer:
-        data = {
-        'capacity': c,
-        'choice': choice,
-        'Revenue': Z,
-        'time 0': elapsed_time,
-        'time 1': total_3,
-        'ite_before': ite_before_3,
-        'ite_3': ite,
-    }
-        df = pd.DataFrame(data, index=[i])
-        df.to_excel(writer, sheet_name=f'Sheet{sheet}', startrow=i, header=False)
-    print("writing complete")
-
 def ADP(c):
-    #this function calls the subproblem function, and solved the linear programing problem using cplex
 
     start_time = time.time()
-    # define the models
     mp = Model(name='Primal Problem')
     #you can change the method when solving the lp problem
     #mp.parameters.lpmethod=2
 
-    # declare/define the decision variables of the primal problem
     vp = {(t, j): mp.continuous_var(lb=0, name='vp_{}_{}'.format(t, j)) for t in range(T + 1) for j in range(c)}
     thetap = mp.continuous_var_list(T + 1, lb=0, name='thetap')
     wp = mp.continuous_var_list(T + 1, lb=0, name='wp')
 
-    # define objective of the primal problem
     mp.minimize(thetap[T] + mp.sum(vp[T, j] for j in range(c)) + wp[T] * c)
 
-    # adding initial constraints
     mp.add_constraint(thetap[0] == 0)
     mp.add_constraint(wp[0] == 0)
     for j in range(c):
@@ -599,12 +557,10 @@ def ADP(c):
             mp.add_constraint(wp[t] <= wp[t + 1])
             mp.add_constraint(thetap[t] <= thetap[t + 1])
 
-    # initialize the values
     v = np.full((T + 1, c), 0.0)
     theta = np.zeros(T + 1)
     w = np.zeros(T + 1)
     pi = np.full(T, np.inf)
-    # Z is the objective value of the ongoing linear program
     Z = 0
     ite = 0
 
@@ -613,17 +569,13 @@ def ADP(c):
         print('iteration:', ite)
         sub_t_start = time.time()
 
-        #the following steps are for running subproblem function using parallel computing
-        # Create chunks of the range to distribute across processes
         chunk_size = T // num_processes
         ranges = [(i * chunk_size + 1, (i + 1) * chunk_size + 1) for i in range(num_processes)]
         args = [(v, w, theta, t_period, ite, 0,c) for t_period in ranges]
-        print("before para")
-        # Use a Pool to parallelize the computation
+        #print("before para")
         with Pool(processes=num_processes) as pool:
             results = pool.starmap(execute_subproblem, args)
-        print("after para")
-        #obtain the results from parallel computing
+        #print("after para")
         p1 = results[0][0]
         p2 = results[0][1]
         p3 = results[0][2]
@@ -631,7 +583,6 @@ def ADP(c):
         y = results[0][4]
         pi = results[0][5]
 
-        #changing the results to the right format
         for process in range(1, num_processes):
             p1 = np.concatenate((p1, results[process][0]), axis=0)
             p2 = np.concatenate((p2, results[process][1]), axis=0)
@@ -640,15 +591,12 @@ def ADP(c):
             y = np.concatenate((y, results[process][4]), axis=0)
             pi = np.concatenate((pi, results[process][5]), axis=0)
 
-        #adding the results as new constraints to the linear programming problem.
         for t in range(1, T + 1):
             print(x[t - 1, :], y[t - 1])
             print('pi:', pi[t - 1])
-            #if the constraints are not violating, we don't add them to LP
             if pi[t - 1] <= 0:
                 continue
 
-            #add constraints
             mp.add_constraint(
                 thetap[t] - thetap[t - 1] + mp.sum((vp[t, j] - vp[t - 1, j]) * x[t - 1, j] for j in range(c))
                 + (wp[t] - wp[t - 1]) * (y[t - 1] + 1)
@@ -661,15 +609,13 @@ def ADP(c):
                 + sum(p3[t - 1, j] * (r3(j, p1[t - 1], p2[t - 1, :], p3[t - 1, :])) for j in range(c)))
 
         sub_t_end = time.time()
-        print('sub total time:', sub_t_end - sub_t_start)
+        #print('sub total time:', sub_t_end - sub_t_start)
 
-        # mp.print_information()
         lp_start = time.time()
         mp.solve()
         lp_end = time.time()
-        print('lp time:', lp_end - lp_start)
+        #print('lp time:', lp_end - lp_start)
 
-        #obtaining the solutions
         for t in range(T + 1):
             for j in range(c):
                 v[t, j] = vp[t, j].solution_value
@@ -683,23 +629,21 @@ def ADP(c):
         print('Revenue:', Z)
     end_time = time.time()
     elapsed_time = end_time - start_time
-    print('time in total:', elapsed_time)
+    #print('time in total:', elapsed_time)
 
     ite_before_3=ite
 
     #the second round
     pi = np.full(T, np.inf)
-    print('optimality solving starts')
+    #print('optimality solving starts')
     time_t_s=time.time()
     while sum(pi) > sig * Z:
         ite = ite + 1
         print('iteration:', ite)
         sub_start = time.time()
-        # Create chunks of the range to distribute across processes
         chunk_size = T // num_processes
         ranges = [(i * chunk_size + 1, (i + 1) * chunk_size + 1) for i in range(num_processes)]
         args = [(v, w, theta, t_period, ite, 1,c) for t_period in ranges]
-        # Use a Pool to parallelize the computation
         with Pool(processes=num_processes) as pool:
             results = pool.starmap(execute_subproblem, args)
 
@@ -737,13 +681,13 @@ def ADP(c):
                 + sum(p3[t - 1, j] * (r3(j, p1[t - 1], p2[t - 1, :], p3[t - 1, :])) for j in range(c)))
 
             sub_t_end = time.time()
-            print('sub single time:', sub_t_end - sub_t_start)
+            #print('sub single time:', sub_t_end - sub_t_start)
         sub_end=time.time()
-        print('sub total time', sub_end-sub_start)
+        #print('sub total time', sub_end-sub_start)
         lp_start = time.time()
         mp.solve()
         lp_end = time.time()
-        print('lp time:', lp_end - lp_start)
+        #print('lp time:', lp_end - lp_start)
         for t in range(T + 1):
             for j in range(c):
                 v[t, j] = vp[t, j].solution_value
@@ -758,12 +702,12 @@ def ADP(c):
             print('Revenue:', Z)
     time_t_e=time.time()
     total_3=time_t_e-time_t_s
-    print('total part for solving to optimality', total_3)
+    #print('total part for solving to optimality', total_3)
     save(v, w, theta, c, choice)
     print('capacity', c, 'choice', choice, 'Revenue', Z, 'time 0', elapsed_time, 'time 1', total_3, 'ite_before', ite_before_3, 'ite_3', ite,)
-    #write_excel(Z, elapsed_time,total_3, ite_before_3, ite)
 
-    return Z
+
+    return Z, time_t_e-start_time
 
 
 
@@ -775,19 +719,34 @@ c=8
 #set the selling horizon days
 T = c * 2
 #set choice
-choice=2
+choice=1
 if choice==1:
     a1, a2, a3, b, tau = cases.homo_seats(c)
 elif choice==2:
     a1, a2, a3, b, tau = cases.aw_seats(c)
 elif choice==3:
     a1, a2, a3, b, tau = cases.incre_seats(c)
-elif choice==4:
-    a1, a2, a3, b, tau = cases.homo_seats_wo3(c)
-elif choice==5:
-    a1, a2, a3, b, tau = cases.aw_seats_wo3(c)
-elif choice==6:
-    a1, a2, a3, b, tau = cases.incre_seats_wo3(c)
+
+folder_path = "results"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+file_name = "runtime_ADP" + str(choice) + "capacity.csv"
+file_path_time = f"{folder_path}/{file_name}"
+try:
+    df_time = pd.read_csv(file_path_time, index_col=0)
+except FileNotFoundError:
+    df_time = pd.DataFrame(columns=["i", "Result"]).set_index("i")
+
+file_name = "UB_ADP" + str(choice) + "capacity.csv"
+file_path_UB = f"{folder_path}/{file_name}"
+try:
+    df_UB = pd.read_csv(file_path_UB, index_col=0)
+except FileNotFoundError:
+    df_UB = pd.DataFrame(columns=["i", "Result"]).set_index("i")
 
 if __name__ == "__main__":
-    ADP(c)
+    UB, Time=ADP(c)
+    df_time.loc[int(c/8)] = Time
+    df_UB.loc[int(c/8)]=UB
+    df_time.to_csv(file_path_time)
+    df_UB.to_csv(file_path_UB)
