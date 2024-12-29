@@ -715,7 +715,7 @@ sig=0.001
 #set the number of processors for parallel computing
 num_processes=16
 #set the capacity c
-c=16
+c=48
 #set the selling horizon days
 T = c * 2
 #set choice
