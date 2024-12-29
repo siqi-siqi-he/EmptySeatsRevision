@@ -202,8 +202,8 @@ def Simulation(random):
 num_sim=100
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
-for choice in range(1, 4):
-    for j in range(1,11):
+for choice in range(3, 4):
+    for j in range(6,11):
         c=j*8
         T=c*2
         folder_path = "RandomNumbers"
