@@ -719,7 +719,7 @@ c=48
 #set the selling horizon days
 T = c * 2
 #set choice
-choice=2
+choice=1
 if choice==1:
     a1, a2, a3, b, tau = cases.homo_seats(c)
 elif choice==2:
