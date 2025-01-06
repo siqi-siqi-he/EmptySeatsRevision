@@ -80,7 +80,7 @@ plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth
 plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 
 plt.xticks(x)
-plt.ylim(0,51000)
+plt.ylim(-5000,51000)
 plt.xlabel('Bus Size',fontsize=14)
 plt.ylabel('Runtime',fontsize=14)
 plt.legend(ncol=2)
@@ -98,7 +98,7 @@ plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth
 plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 
 plt.xticks(x)
-plt.ylim(0,51000)
+plt.ylim(-5000,51000)
 plt.xlabel('Bus Size',fontsize=14)
 plt.ylabel('Runtime',fontsize=14)
 plt.legend(ncol=2)
@@ -116,7 +116,7 @@ plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth
 plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 
 plt.xticks(x)
-plt.ylim(0,51000)
+plt.ylim(-5000,51000)
 plt.xlabel('Bus Size',fontsize=14)
 plt.ylabel('Runtime',fontsize=14)
 plt.legend(ncol=2)

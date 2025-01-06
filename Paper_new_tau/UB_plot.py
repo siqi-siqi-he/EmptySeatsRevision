@@ -64,7 +64,7 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     sbADP_simu=np.loadtxt(file_path)
     '''
-    return ADP, SBD, SBD, DLP
+    return ADP, SBD, SBD_ke, DLP
 
 width=2
 marksize=10
