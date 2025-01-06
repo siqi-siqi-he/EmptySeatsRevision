@@ -73,7 +73,7 @@ def DLP_UB(c):
 eps = 1e-5
 results=[0]*11
 bounds=[0]*11
-for choice in range(1,4):
+for choice in range(2,4):
     for i in range(1,11):
         c=i*8
         T = c * 2
