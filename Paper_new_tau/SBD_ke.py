@@ -224,9 +224,9 @@ def computeDP(choice):
 
 results=[0]*11
 bounds=[0]*11
-for choice in range(2,4):
+for choice in range(3,4):
     print("choice:", choice)
-    for i in range(1,11):
+    for i in range(9,11):
         c=i*8
         T=c*2
         print("c:", c)
@@ -242,8 +242,8 @@ for choice in range(2,4):
         os.makedirs(folder_path)
     file_name = "runtime_SBD_ke" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, results)
+    #np.savetxt(file_path, results)
     file_name = "UB_SBD_ke" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, bounds)
+    #np.savetxt(file_path, bounds)
     print(results)

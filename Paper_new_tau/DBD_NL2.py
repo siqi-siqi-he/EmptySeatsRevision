@@ -252,18 +252,18 @@ def computeDP(choice):
 
 results=[0]*11
 bounds=[0]*11
-for choice in range(1,4):
+for choice in range(2,3):
     print("choice:", choice)
-    for i in range(1,11):
+    for i in range(1,6):
         #this means that we take capacity of bus from 8 to 80
         c=i*8
         print("c:", c)
         T=c*2
         if choice == 1:
             a1, a2, a3, b, tau = cases.homo_seats(c)
-        elif choice == 2:
-            a1, a2, a3, b, tau = cases.incre_seats(c)
         elif choice == 3:
+            a1, a2, a3, b, tau = cases.incre_seats(c)
+        elif choice == 2:
             a1, a2, a3, b, tau = cases.aw_seats(c)
         results[i], bounds[i]=computeDP(choice)
     folder_path = "results"
