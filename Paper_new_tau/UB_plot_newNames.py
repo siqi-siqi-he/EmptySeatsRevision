@@ -31,12 +31,16 @@ def read(choice):
     file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
-
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
-    file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    DBD_simu=np.loadtxt(file_path)
     '''
+    folder_path = "results"
+    file_name = "UB_DBD"+str(choice)+"capacity"+".txt"
+    file_path = f"{folder_path}/{file_name}"
+    try:
+        DBD=np.loadtxt(file_path)
+        DBD=fill(DBD[1:])
+    except:
+        DBD=fill([])
+
 
     folder_path = "results"
     file_name = "UB_SBD"+str(choice)+"capacity"+".txt"
@@ -64,17 +68,17 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     sbADP_simu=np.loadtxt(file_path)
     '''
-    return ADP, SBD, SBD_ke, DLP
+    return ADP, SBD, SBD_ke, DLP, DBD
 
 width=2
 marksize=10
 plt.rcParams['font.size'] = 14
 #homo
 plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(1)
+ADP, SBD, SBD_ke, DLP, DBD=read(1)
 
 plt.plot(x, SBD/SBD, label='UB DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/SBD, label='UB TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/SBD, label='UB DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP/SBD, label='UB AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
@@ -87,12 +91,12 @@ plt.ylabel('Expected Revenue Upper Bound',fontsize=14)
 plt.legend(ncol=2)
 
 
-#het
+#AW
 plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(2)
+ADP, SBD, SBD_ke, DLP, DBD=read(2)
 
 plt.plot(x, SBD/SBD, label='UB DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/SBD, label='UB TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/SBD, label='UB DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP/SBD, label='UB AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
@@ -105,12 +109,12 @@ plt.ylabel('Expected Revenue Upper Bound',fontsize=14)
 plt.legend(ncol=2)
 
 
-#aw
+#HET
 plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(3)
+ADP, SBD, SBD_ke, DLP, DBD=read(3)
 
 plt.plot(x, SBD/SBD, label='UB DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/SBD, label='UB TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/SBD, label='UB DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP/SBD, label='UB AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)

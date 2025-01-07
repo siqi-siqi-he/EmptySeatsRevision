@@ -5,27 +5,27 @@ choice=0
 c=8
 
 def read():
-    folder_path = "EmptySeatsStudy (experiments)/ADP"
+    folder_path = "ADP"
     file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP = np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/ADP"
+    folder_path = "ADP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
+    folder_path = "DBD"
     file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
+    folder_path = "DBD"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
+    folder_path = "DBD"
     file_name = "DBD_NL_results0capacity" + str(c) + "2.txt"
     file_path = f"{folder_path}/{file_name}"
     DBD=np.loadtxt(file_path)
@@ -34,22 +34,22 @@ def read():
         if DBD_ke[i]>DBD[i]:
             DBD_ke[i] = DBD[i]
 
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
+    folder_path = "DBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/SBD"
+    folder_path = "SBD"
     file_name = "SBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/SBD"
+    folder_path = "SBD"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/SBD"
+    folder_path = "SBD"
     file_name = "SBD_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD=np.loadtxt(file_path)
@@ -58,17 +58,17 @@ def read():
         if SBD_ke[i]>SBD[i]:
             SBD_ke[i] = SBD[i]
 
-    folder_path = "EmptySeatsStudy (experiments)/SBD"
+    folder_path = "SBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/DP"
+    folder_path = "DP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DP_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/sbADP"
+    folder_path = "sbADP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     sbADP_simu=np.loadtxt(file_path)

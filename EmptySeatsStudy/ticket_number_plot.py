@@ -6,37 +6,37 @@ c=8
 
 def read():
 
-    folder_path = "EmptySeatsStudy/ADP"
+    folder_path = "ADP"
     file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy/DBD"
+    folder_path = "DBD"
     file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
     #checked
     DBD_ke_simu_old=[0.51,0.51,0.54,0.6,0.6,0.61,0.65,0.66,0.68,0.71,0.73,0.76,0.77,0.86,0.91,0.93,0.97,0.98,0.99,0.97,0.98,1.04,1.07,1.08,1.11,1.14,1.15,1.15,1.18,1.21,1.22,1.27,1.29,1.3,1.34,1.33,1.33,1.37,1.39,1.38,1.37,1.4,1.42,1.44,1.46,1.48,1.5,1.58,1.59,1.61,1.62]
 
-    folder_path = "EmptySeatsStudy/DBD"
+    folder_path = "DBD"
     file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_simu=np.loadtxt(file_path)
     DBD_simu_old=[0.51,0.51,0.54,0.58,0.6,0.61,0.65,0.66,0.68,0.71,0.73,0.76,0.77,0.86,0.91,0.93,0.97,0.98,0.99,0.97,0.98,1.04,1.07,1.08,1.1,1.14,1.15,1.16,1.18,1.21,1.22,1.27,1.28,1.3,1.34,1.33,1.33,1.37,1.38,1.38,1.37,1.4,1.42,1.44,1.46,1.48,1.5,1.58,1.59,1.61,1.62]
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "SBD"
     file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke_simu=np.loadtxt(file_path)
     #checked
 
-    folder_path = "EmptySeatsStudy/SBD"
+    folder_path = "SBD"
     file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_simu=np.loadtxt(file_path)
     #SBD_simu=[0.59,0.58,0.63,0.65,0.69,0.72,0.73,0.77,0.77,0.79,0.81,0.83,0.89,0.9,0.91,0.94,0.93,0.94,0.93,0.95,0.97,1.01,1.02,1.03,1.03,1.06,1.08,1.07,1.1,1.14,1.18,1.22,1.24,1.26,1.27,1.3,1.36,1.4,1.44,1.46,1.46,1.51,1.5,1.52,1.53,1.56,1.59,1.62,1.63,1.69,1.72]
 
-    folder_path = "EmptySeatsStudy/DP"
+    folder_path = "DP"
     file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DP_simu=np.loadtxt(file_path)
