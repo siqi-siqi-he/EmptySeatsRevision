@@ -42,12 +42,18 @@ def read(choice):
     except:
         DBD=fill([])
 
+    folder_path = "results"
+    file_name = "runtime_DLPnorm"+str(choice)+"capacity"+".txt"
+    file_path = f"{folder_path}/{file_name}"
+    DLP=np.loadtxt(file_path)
+    DLP=fill(DLP[1:])
 
     folder_path = "results"
     file_name = "runtime_SBD"+str(choice)+"capacity"+".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD=np.loadtxt(file_path)
     SBD=fill(SBD[1:])
+    SBD=SBD+DLP
     #checked
 
     folder_path = "results"
@@ -55,12 +61,7 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     SBD_ke=np.loadtxt(file_path)
     SBD_ke=fill(SBD_ke[1:])
-    
-    folder_path = "results"
-    file_name = "runtime_DLPnorm"+str(choice)+"capacity"+".txt"
-    file_path = f"{folder_path}/{file_name}"
-    DLP=np.loadtxt(file_path)
-    DLP=fill(DLP[1:])
+    SBD_ke=SBD_ke+SBD
 
     '''
     folder_path = "EmptySeatsStudy (experiments)/sbADP"
