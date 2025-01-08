@@ -270,7 +270,7 @@ results=[0]*11
 bounds=[0]*11
 for choice in range(2,3):
     print("choice:", choice)
-    for i in range(1,5):
+    for i in range(4,5):
         #this means that we take capacity of bus from 8 to 80
         c=i*8
         print("c:", c)
