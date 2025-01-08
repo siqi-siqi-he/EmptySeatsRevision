@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 x=[8,16,24,32,40,48,56,64,72,80]
 
+#not up to date
+
 def regular(a):
     a = [a[i] / (i + 1) / 8 for i in range(len(a))]
     return a
@@ -50,6 +52,7 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     SBD_ke=np.loadtxt(file_path)
     SBD_ke=fill(SBD_ke[1:])
+    SBD_ke=SBD_ke+SBD
     
     folder_path = "results"
     file_name = "runtime_DLPnorm"+str(choice)+"capacity"+".txt"
