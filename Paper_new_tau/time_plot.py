@@ -8,6 +8,7 @@ x=[8,16,24,32,40,48,56,64,72,80]
 def regular(a):
     a = [a[i] / (i + 1) / 8 for i in range(len(a))]
     return a
+
 def fill(a):
     n=len(x)-len(a)
     if n <0:
@@ -28,17 +29,30 @@ def read(choice):
     ADP=pd.read_csv(file_path)
     ADP=ADP.sort_values('i')
     ADP=fill(ADP['Result'].to_numpy())
-    '''
-    folder_path = "results/DBD"
-    file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    DBD_ke_simu=np.loadtxt(file_path)
 
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
-    file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
+
+    folder_path = "results"
+    file_name = "runtime_DBD"+str(choice)+"capacity"+".txt"
     file_path = f"{folder_path}/{file_name}"
-    DBD_simu=np.loadtxt(file_path)
-    '''
+    DBD=np.loadtxt(file_path)
+    DBD=DBD[1:]
+    print(choice)
+    print(DBD)
+    DBD=DBD+ADP[:len(DBD)]
+    print(DBD)
+    DBD=fill(DBD)
+
+
+    folder_path = "results"
+    file_name = "runtime_DBD_ke"+str(choice)+"capacity"+".txt"
+    file_path = f"{folder_path}/{file_name}"
+    try:
+        DBD_ke=np.loadtxt(file_path)
+        DBD_ke=DBD_ke[1:]
+        DBD_ke=DBD_ke+DBD[:len(DBD_ke)]
+        DBD_ke=fill(DBD_ke)
+    except:
+        DBD_ke=fill([])
 
     folder_path = "results"
     file_name = "runtime_SBD"+str(choice)+"capacity"+".txt"
@@ -66,37 +80,19 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     sbADP_simu=np.loadtxt(file_path)
     '''
-    return ADP, SBD, SBD_ke, DLP
+    return ADP, SBD, SBD_ke, DLP, DBD, DBD_ke
 
 width=2
 marksize=10
 plt.rcParams['font.size'] = 14
 #homo
 plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(1)
+ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(1)
 
-plt.plot(x, SBD, label='SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-#plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
-
-plt.xticks(x)
-plt.ylim(-5000,51000)
-plt.xlabel('Bus Size',fontsize=14)
-plt.ylabel('Runtime',fontsize=14)
-plt.legend(ncol=2)
-
-
-#het
-plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(2)
-
-plt.plot(x, SBD, label='SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-#plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
+plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
+plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
 plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 
@@ -109,12 +105,30 @@ plt.legend(ncol=2)
 
 #aw
 plt.figure(figsize=(10, 6))
-ADP, SBD, SBD_ke, DLP=read(3)
+ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(2)
 
-plt.plot(x, SBD, label='SDPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='SDPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-#plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
+plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
+plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
+plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
+
+plt.xticks(x)
+plt.ylim(-5000,51000)
+plt.xlabel('Bus Size',fontsize=14)
+plt.ylabel('Runtime',fontsize=14)
+plt.legend(ncol=2)
+
+
+#het
+plt.figure(figsize=(10, 6))
+ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(3)
+
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
+plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
+plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
 plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
 

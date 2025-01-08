@@ -69,9 +69,9 @@ def read(c,choice):
 def choose_choice(choice,c):
     if choice==1:
         a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice==2:
+    elif choice==3:
         a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 3:
+    elif choice == 2:
         a1, a2, a3, b, tau = cases.aw_seats(c)
     return a1, a2, a3, b, tau
 
