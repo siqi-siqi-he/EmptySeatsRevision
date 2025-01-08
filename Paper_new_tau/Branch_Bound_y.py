@@ -5,7 +5,7 @@ import sys
 import time
 import numpy as np
 import cvxpy as cp
-import cases as cases
+import new_cases as cases
 
 counter = itertools.count()
 
