@@ -225,7 +225,7 @@ def computeDP(choice):
                                    x <= 1,
                                    y <= 1,
                                    y >= 0,
-                                   x[i]==0,
+                                   x[i]==1,
                                    p2j <= 1,
                                    p3j <= 1,
                                    p2j >= eps / c,
