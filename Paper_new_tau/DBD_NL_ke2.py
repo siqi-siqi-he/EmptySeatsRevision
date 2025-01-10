@@ -270,7 +270,7 @@ results=[0]*11
 bounds=[0]*11
 for choice in range(2,3):
     print("choice:", choice)
-    for i in range(4,5):
+    for i in range(3,4):
         #this means that we take capacity of bus from 8 to 80
         c=i*8
         print("c:", c)
@@ -287,8 +287,8 @@ for choice in range(2,3):
         os.makedirs(folder_path)
     file_name = "runtime_DBD_ke" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, results)
+    #np.savetxt(file_path, results)
     file_name = "UB_DBD_ke" + str(choice) + "capacity.txt"
     file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, bounds)
+    #np.savetxt(file_path, bounds)
     #print(results)
