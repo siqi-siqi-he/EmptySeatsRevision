@@ -206,7 +206,7 @@ for choice in range(2, 3):
     for j in range(5,6):
         c=j*8
         T=c*2
-        folder_path = "RandomNumbers_test"
+        folder_path = "RandomNumbers_test2"
         file_name = "rand.txt"
         file_path = f"{folder_path}/{file_name}"
         random = np.loadtxt(file_path)

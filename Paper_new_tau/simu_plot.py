@@ -27,22 +27,25 @@ def read(choice):
     UB=fill(UB[1:])
 
     folder_path = "simu_results"
-    file_name = "UB_ADP"+str(choice)+"capacity"+".csv"
+    file_name = "mean_ADP_simu_choice_"+str(choice)+"_CRN.txt"
     file_path = f"{folder_path}/{file_name}"
-    # ADP=pd.read_csv(file_path)
-    # ADP=ADP.sort_values('i')
-    # ADP=fill(ADP['Result'].to_numpy())
+    ADP=np.loadtxt(file_path)
+    ADP=fill(ADP)
     '''
     folder_path = "results/DBD"
     file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
-
-    folder_path = "EmptySeatsStudy (experiments)/DBD"
-    file_name = "simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    DBD_simu=np.loadtxt(file_path)
     '''
+    folder_path = "simu_results"
+    file_name = "mean_DBD_simu_choice_"+str(choice)+"_CRN"+".txt"
+    file_path = f"{folder_path}/{file_name}"
+    try:
+        DBD=np.loadtxt(file_path)
+        DBD=fill(DBD)
+    except:
+        DBD=fill([])
+
 
     folder_path = "simu_results"
     file_name = "mean_SBD_simu_choice_"+str(choice)+"_CRN"+".txt"
@@ -69,24 +72,24 @@ def read(choice):
     file_path = f"{folder_path}/{file_name}"
     sbADP_simu=np.loadtxt(file_path)
     '''
-    return UB, SBD, SBD_ke, DLP
+    return UB, SBD, SBD_ke, DLP, ADP, DBD
 
 width=2
 marksize=10
 plt.rcParams['font.size'] = 14
-#homo
+#homo1
 
 #pricing policies
 plt.figure(figsize=(10, 6))
-UB, SBD, SBD_ke, DLP=read(1)
+UB, SBD, SBD_ke, DLP, ADP, DBD=read(1)
 
 print(UB)
 print(SBD)
 plt.plot(x, SBD/UB, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, DBD_simu/DLP, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP/UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=100)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 
@@ -101,12 +104,12 @@ plt.legend(ncol=2)
 
 plt.figure(figsize=(10, 6))
 
-UB, SBD, SBD_ke, DLP=read(2)
+UB, SBD, SBD_ke, DLP, ADP, DBD=read(2)
 plt.plot(x, SBD/UB, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP/UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 
@@ -117,15 +120,15 @@ plt.ylabel('Revenue',fontsize=14)
 plt.title('Pricing Policies for Window Aisle Seats (scaled by UB DPD)')
 plt.legend(ncol=2)
 
-#hete1
+#hete3
 plt.figure(figsize=(10, 6))
-UB, SBD, SBD_ke, DLP=read(3)
+UB, SBD, SBD_ke, DLP, ADP, DBD=read(3)
 
 plt.plot(x, SBD/UB, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, DBD_simu/SBD_UB, label='Policy DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, aALP_simu/SBD_UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP/UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 

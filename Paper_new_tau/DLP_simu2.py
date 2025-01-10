@@ -69,9 +69,9 @@ def read(c,choice):
 def choose_choice(choice,c):
     if choice==1:
         a1, a2, a3, b, tau = cases.homo_seats(c)
-    elif choice==2:
+    elif choice==3:
         a1, a2, a3, b, tau = cases.incre_seats(c)
-    elif choice == 3:
+    elif choice == 2:
         a1, a2, a3, b, tau = cases.aw_seats(c)
     return a1, a2, a3, b, tau
 
@@ -195,7 +195,7 @@ var_size=np.zeros((10,3))
 
 for choice in range(2, 3):
 
-    for j in range(1,11):
+    for j in range(1,9):
         c=j*8
         T=c*2
         a1, a2, a3, b, tau = choose_choice(choice, c)
@@ -219,7 +219,11 @@ for choice in range(2, 3):
     directory = "simu_results"
     os.makedirs(directory, exist_ok=True)
     full_path = f"{directory}/mean_DLP_simu_choice_{choice}_CRN.txt"
-    np.savetxt(full_path, mean_size[:,choice-1])
+    print(full_path)
+    print(mean_size[:,choice-1])
+    #np.savetxt(full_path, mean_size[:,choice-1])
     full_path = f"{directory}/var_DLP_simu_choice_{choice}_CRN.txt"
-    np.savetxt(full_path, var_size[:,choice-1])
+    print(full_path)
+    print(var_size[:,choice-1])
+    #np.savetxt(full_path, var_size[:,choice-1])
 

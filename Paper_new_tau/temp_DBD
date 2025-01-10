@@ -1,0 +1,20 @@
+C:\Users\es\EmptySeats\Paper_new_tau>python DBD_NL_ke2.py
+choice: 2
+c: 8
+total time 331.47655487060547
+c: 16
+total time 3604.991173505783
+c: 24
+total time 28489.17977309227
+c: 32
+
+
+
+C:\Users\es\EmptySeats\Paper_new_tau>python DBD_NL_ke3.py
+choice: 3
+c: 8
+total time 322.536869764328
+c: 16
+total time 3142.5406811237335
+c: 24
+
