@@ -110,7 +110,7 @@ plt.plot(x, DBD/UB, label='Policy TDPD',color='lightsteelblue', marker='s',marke
 plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP/UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 
 plt.xticks(x)
@@ -126,10 +126,10 @@ UB, SBD, SBD_ke, DLP, ADP, DBD=read(3)
 
 plt.plot(x, SBD/UB, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, DBD/UB, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke/UB, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, DBD_ke_simu/SBD_UB, label='Policy DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 plt.plot(x, ADP/UB, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
-#plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x,DLP/UB,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
 #plt.plot(x, sbADP_simu/SBD_UB, label='Policy sbADP (M=500)',color='salmon', marker='<', linestyle=':', linewidth=width, markersize=marksize)
 
 plt.xticks(x)

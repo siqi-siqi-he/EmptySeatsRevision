@@ -207,7 +207,7 @@ num_sim=100
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
 for choice in range(3,4):
-    for j in range(8,9):
+    for j in range(9,10):
         c=j*8
         T=c*2
         folder_path = "RandomNumbers"
