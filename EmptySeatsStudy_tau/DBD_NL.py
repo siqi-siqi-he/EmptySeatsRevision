@@ -1,9 +1,11 @@
 import cvxpy as cp
 import numpy as np
-import decomposition.Branch_Bound as BB
+import Branch_Bound as BB
 import cases as cases
 import math
 import time
+import os
+
 c=8
 T=c*2
 choice=0
@@ -149,7 +151,7 @@ def computeDP(choice):
 
     start=time.time()
     for t in range(1,T+1):
-        V[t, 0] = V[t - 1, 0] + sum((v[t, j] - v[t - 1, j]) for j in range(c))
+        V[t, 0] = V[t - 1, 0]
         for y in range(1,c+1):
             if y==1:
                 objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1+p1*V[t-1,y-1] \
@@ -178,10 +180,10 @@ def computeDP(choice):
                 vars = {p0[0], p2[0], p3[0]}
                 func = lambda p0, p10, p20, p30, x: obj_func1(v, w, theta, t, p0, p10, p20, p30, x, y, V)
                 ite = 1000
-                root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
+                root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
                                      p0_vars={p0}, p1_vars={p1},
                                      p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func)
-                res, sol = root.bbsolve(ite)
+                res, sol = root.bbsolve()
 
                 p10 = np.squeeze([v.value for v in sol.p1_vars])
                 p20 = [v.value for v in sol.p2j_vars]
@@ -226,10 +228,10 @@ def computeDP(choice):
                 vars = {p0[0], p2[0], p3[0]}
                 func = lambda p0, p10, p20, p30, x: obj_func2(v, w, theta, t, p0, p10, p20, p30, x, y, V)
                 ite = 1000
-                root = BB.BBTreeNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
+                root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
                                      p0_vars={p0}, p1_vars={p1},
                                      p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func)
-                res, sol = root.bbsolve(ite)
+                res, sol = root.bbsolve()
 
                 p10 = np.squeeze([v.value for v in sol.p1_vars])
                 p20 = [v.value for v in sol.p2j_vars]
@@ -243,6 +245,8 @@ def computeDP(choice):
     print('total time',end-start)
 
     folder_path = "DBD"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     file_name = "DBD_NL_DPtable" + str(choice) + "capacity" + str(c) + "step"+str(step)+".txt"
     file_path = f"{folder_path}/{file_name}"
     np.savetxt(file_path, V)
@@ -259,6 +263,8 @@ for step in range(51):
     results[step] = computeDP(0)
 
 folder_path = "DBD"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 file_name = "DBD_NL_results" + str(choice) + "capacity" + str(c) + "2.txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, results)
