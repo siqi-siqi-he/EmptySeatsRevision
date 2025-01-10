@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import docplex
 from docplex.mp.model import Model
-import ADP_NL_cases as cases
+import cases as cases
 import math
 import time
 import numpy as np
@@ -11,6 +11,7 @@ import warnings
 import copy
 from heapq import *
 import itertools
+import os
 
 counter = itertools.count()
 
@@ -591,4 +592,6 @@ for step in range(51):
 folder_path = "ADP"
 file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 np.savetxt(file_path, results)
