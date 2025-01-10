@@ -309,7 +309,7 @@ for step in range(51):
     a3 = [0.1 * step for i in range(len(a3))]
     results[step] = computeDP(0)
 
-folder_path = "DBD"
+folder_path = "DBD_ke"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
