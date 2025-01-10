@@ -133,10 +133,11 @@ def computeDP(choice):
 
     start=time.time()
     for i in range(c):
-
+        print('compo',i)
         start_i = time.time()
         V = np.full((T + 1, 2), 0.0)
         for t in range(1,T+1):
+            print('time',t)
             for j in range(2):
                 if j == 0:
                     objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 + (
@@ -270,7 +271,7 @@ results=[0]*11
 bounds=[0]*11
 for choice in range(3,4):
     print("choice:", choice)
-    for i in range(3,4):
+    for i in range(1,4):
         #this means that we take capacity of bus from 8 to 80
         c=i*8
         print("c:", c)
