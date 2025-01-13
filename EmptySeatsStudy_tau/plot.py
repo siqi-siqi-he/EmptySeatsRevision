@@ -5,22 +5,22 @@ choice=0
 c=8
 
 def read():
-    folder_path = "ADP"
-    file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    ADP = np.loadtxt(file_path)
+    # folder_path = "ADP"
+    # file_name = "ADP_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
+    # file_path = f"{folder_path}/{file_name}"
+    # ADP = np.loadtxt(file_path)
 
     folder_path = "ADP"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     ADP_simu=np.loadtxt(file_path)
 
-    folder_path = "DBD"
-    file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    DBD_ke=np.loadtxt(file_path)
+    # folder_path = "DBD"
+    # file_name = "DBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
+    # file_path = f"{folder_path}/{file_name}"
+    # DBD_ke=np.loadtxt(file_path)
 
-    folder_path = "DBD"
+    folder_path = "DBD_ke"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_ke_simu=np.loadtxt(file_path)
@@ -30,21 +30,21 @@ def read():
     file_path = f"{folder_path}/{file_name}"
     DBD=np.loadtxt(file_path)
 
-    for i in range(len(DBD_ke)):
-        if DBD_ke[i]>DBD[i]:
-            DBD_ke[i] = DBD[i]
+    # for i in range(len(DBD_ke)):
+    #     if DBD_ke[i]>DBD[i]:
+    #         DBD_ke[i] = DBD[i]
 
     folder_path = "DBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     DBD_simu=np.loadtxt(file_path)
 
-    folder_path = "SBD"
-    file_name = "SBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
-    file_path = f"{folder_path}/{file_name}"
-    SBD_ke=np.loadtxt(file_path)
+    # folder_path = "SBD"
+    # file_name = "SBD_NL_ke_results" + str(choice) + "capacity" + str(c) + ".txt"
+    # file_path = f"{folder_path}/{file_name}"
+    # SBD_ke=np.loadtxt(file_path)
 
-    folder_path = "SBD"
+    folder_path = "SBD_ke"
     file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     SBD_ke_simu=np.loadtxt(file_path)
@@ -54,9 +54,9 @@ def read():
     file_path = f"{folder_path}/{file_name}"
     SBD=np.loadtxt(file_path)
 
-    for i in range(len(SBD_ke)):
-        if SBD_ke[i]>SBD[i]:
-            SBD_ke[i] = SBD[i]
+    # for i in range(len(SBD_ke)):
+    #     if SBD_ke[i]>SBD[i]:
+    #         SBD_ke[i] = SBD[i]
 
     folder_path = "SBD"
     file_name = "simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
@@ -68,12 +68,12 @@ def read():
     file_path = f"{folder_path}/{file_name}"
     DP_simu=np.loadtxt(file_path)
 
-    return SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu
+    return SBD_simu, SBD, DBD, SBD_ke_simu, DBD_simu, DBD_ke_simu, ADP_simu, DP_simu
 
 
 width=1.5
 marksize=5
-SBD_simu, SBD, SBD_ke, SBD_ke_simu, DBD, DBD_simu, DBD_ke, DBD_ke_simu, ADP, ADP_simu, DP_simu=read()
+SBD_simu, SBD, DBD, SBD_ke_simu, DBD_simu, DBD_ke_simu, ADP_simu, DP_simu=read()
 
 sbADP_simu=[65.05969484,65.18527797,65.08791974,64.96199235,64.80211349,64.91616445,65.05971619,65.18526183,65.18093926,65.23375297,65.5039493,65.41007793,65.39611551,65.67994812,65.70755424,66.03200204,66.06210471,65.95377501,66.20231324,66.36810825,66.39196971,66.52637361,66.57511581,66.79443883,66.9093705,67.09599149,67.44124542,67.43079661,67.55950003,67.89337703,68.46161116,68.57675325,68.58347982,68.7843082,69.18060082,69.23304694,69.25940226,69.18431506,69.66343253,69.98609761,70.18649126,70.51725179,70.88320463,71.28645756,71.21249996,71.43837228,71.63856816,71.97809992,72.1463316,72.36908837,72.76262396]
 plt.figure(figsize=(10, 6))
@@ -96,13 +96,13 @@ plt.plot(x, DBD_simu, label='Policy DPD',color='lightsteelblue', marker='s', lin
 plt.plot(x, DBD_ke_simu, label='Policy DPD-Benchmark',color='yellow', marker='s', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, ADP_simu, label='Policy AFF',color='black', marker='x', linestyle=':', linewidth=1.5, markersize=5)
 plt.plot(x, DP_simu, label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
-plt.plot(x, back_simu, label='Policy BE',color='cyan', marker='^', linestyle=':', linewidth=1.5, markersize=5)
+#plt.plot(x, sbADP_simu, label='Policy sbADP (M=100)',color='salmon', marker='+', linestyle=':', linewidth=1.5, markersize=5)
+#plt.plot(x, back_simu, label='Policy BE',color='cyan', marker='^', linestyle=':', linewidth=1.5, markersize=5)
 
 x0=[i*0.5 for i in range(11)]
 plt.xticks(x0)
 
-plt.ylim(60, 85)
+plt.ylim(70, 95)
 plt.xlabel('Quality Index of Product Type 3')
 plt.ylabel('Revenue')
 #plt.title('Homogeneous Seats')

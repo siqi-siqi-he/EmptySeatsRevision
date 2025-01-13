@@ -198,7 +198,7 @@ def Simulation(random):
 num_sim=100
 mean_size=np.zeros((10,3))
 var_size=np.zeros((10,3))
-for choice in range(1,2):
+for choice in range(3, 4):
     for j in range(3,4):
         c=j*8
         T=c*2
@@ -223,6 +223,6 @@ for choice in range(1,2):
     directory = "simu_results"
     os.makedirs(directory, exist_ok=True)
     full_path = f"{directory}/mean_DBD_NL_ke_simu_choice_{choice}_CRN.txt"
-    #np.savetxt(full_path, mean_size[:,choice-1])
+    np.savetxt(full_path, mean_size[:,choice-1])
     full_path = f"{directory}/var_DBD_NL_ke_simu_choice_{choice}_CRN.txt"
-    #np.savetxt(full_path, var_size[:,choice-1])
+    np.savetxt(full_path, var_size[:,choice-1])

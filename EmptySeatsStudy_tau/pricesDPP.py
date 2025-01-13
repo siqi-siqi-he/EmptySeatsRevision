@@ -1,15 +1,13 @@
 import pandas as pd
 import numpy as np
-
+import time
 import cases as cases
 import cvxpy as cp
 import math
 from cvxpy.error import SolverError
 import mosek
-import time
-eps=1e-9
-c=8
-choice=0
+
+eps=1e-5
 
 def UP_t(c,a1, a2, a3, b, tau):
     result=1-1/(1+math.exp(a1*tau[0])+sum(math.exp(a2[j]) for j in range(c))**tau[1]
@@ -29,6 +27,11 @@ def UP_3(j, c, a1, a2, a3, b, tau):
     result = math.exp(a3[j]) * sum(math.exp(a3[j]) for j in range(c)) ** (tau[2] - 1) / (
             1 + sum(math.exp(a3[j]) for j in range(c)) ** (tau[2]))
     return result
+
+def V(x, y, t,c,choice):
+    dual = read(c, choice)
+    V = sum(x[j] * dual[j] for j in range(c)) + dual[c] * y
+    return V
 
 def E(j,c):
     result=[0 for j in range(c)]
@@ -57,33 +60,17 @@ def r3(j,p1,p2,p3,a1, a2, a3, b, tau):
 
     return result
 
-
-def findseats(rand,p1,pj):
-    sum=p1
-    for i in range(len(pj)):
-        sum=sum+pj[i]
-        if sum>=rand:
-            return i
-    raise TypeError("Math Wrong")
-
 def read(c,choice):
-
-    V = np.full((c,c*2 + 1, 2), 0.0)
-    folder_path = "DBD_ke"
-    for i in range(c):
-        file_name = "DBD_NL_ke_DPtable" + str(choice) + "capacity" + str(c) + "compo" + str(i) + "step" + str(step) + ".txt"
-        file_path = f"{folder_path}/{file_name}"
-        V[i,:,:] = np.loadtxt(file_path)
-
-    folder_path = "DBD"
-    file_name = "DBD_NL_DPtable" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    folder_path = "DP"
+    file_name = "DLPnorm" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
     file_path = f"{folder_path}/{file_name}"
-    Vy = np.loadtxt(file_path)
+    dual = np.loadtxt(file_path)
 
-    return V, Vy
+    return dual
 
-def Simulation(ii):
-    p3num=0
+
+
+def Price_Calculate():
     T=c*2
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
@@ -93,40 +80,29 @@ def Simulation(ii):
     p3j = cp.Variable(c, name="p3j")
     #maybe other variables
 
-    x = np.full(c,1)
-    y = c
-
-    Revenue=0
-    V, Vy=read(c,choice)
-
+    x = np.array([1,1,0,0,0,0,0,0])
+    y = 2
+    price1=[0]*(T+1)
+    price2=[0]*(T+1)
+    price3=[0]*(T+1)
     for t in range(T,0,-1):
 
-        folder_path = "RandomNumbers"
-        file_name = "randomdecisions_capacity8_choice0_sim100_a3_4_t" + str(t) + "_DLPbasic.txt"
-        file_path = f"{folder_path}/{file_name}"
-        random = np.loadtxt(file_path)
 
-        if y==0:
-            break
-        Vyd = 0
-        Vyd2=0
-        Vxd = [0] * c
-        if y>0:
-            Vyd=Vy[t-1,y]-Vy[t-1,y-1]
-            if y>1:
-                Vyd2 = Vy[t - 1, y] - Vy[t - 1, y - 2]
-        for i in range(c):
-            if x[i]>0:
-                Vxd[i]=V[i,t-1,1]-V[i,t-1,0]
-        objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 - p1*Vyd \
+        objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 + V(x, y - 1, t - 1, c,
+                                                                                                 choice) * p1 \
                        + cp.sum(
-            [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] - (Vxd[j]+Vyd) *
+            [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] + V(x - E(j, c),
+                                                                                           y - 1, t - 1,
+                                                                                           c, choice) *
              p2j[j] for j in range(c)]) \
                        + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
-                       + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j] -(Vxd[j]+Vxd[j - (-1) ** (j + 1)]+Vyd2) * p3j[j] for j in range(c)]) \
-                       + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0)
+                       + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j] + V(
+            x - E(j, c) - E(j - (-1) ** (j + 1), c), y - 2, t - 1, c, choice) * p3j[j] for j in range(c)]) \
+                       + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0) + p0 * V(x, y, t - 1, c,
+                                                                                                    choice)
         objective = cp.Maximize(objective_cp)
-
+        if y==0:
+            break
 
         constraints = [p1 <= 1,
                        p1 >= eps,
@@ -163,7 +139,6 @@ def Simulation(ii):
         if p0[0].value is None or p1[0].value is None or p2[0].value is None or p3[0].value is None:
             subp.solve(solver=cp.SCS)
 
-
         if p0[0].value is None or p1[0].value is None or p2[0].value is None or p3[0].value is None:
             raise ValueError("None again, tried=", p0[0].value ,p1[0].value,p2[0].value,p3[0].value)
         p00 = p0[0].value
@@ -174,82 +149,35 @@ def Simulation(ii):
         p3j0 = p3j.value
         obj_value = subp.value
 
-        price1=r1(p10,p2j0,p3j0,a1, a2, a3, b, tau)
-        price2=[r2(j,p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
-        price3 = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)]
+        price1[t]=r1(p10,p2j0,p3j0,a1, a2, a3, b, tau)
+        price2[t]=[r2(j,p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)][0]
+        price3[t] = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)][0]
 
-        if random[ii] > p10 + p20 + p30:
-            continue
-        elif random[ii] < p10:
-            Revenue = Revenue + price1
-            y = y - 1
-            continue
-        elif random[ii] < p10 + p20:
-            seat = findseats(random[ii], p10, p2j0)
-            if x[seat] == 0:
-                continue
-                # raise ValueError("Algorithm is incorrect: x is already sold")
-            else:
-                Revenue = Revenue + price2[seat]
-                y = y - 1
-                x[seat] = 0
-                continue
-        else:
-            seat = findseats(random[ii], p10 + p20, p3j0)
-            if x[seat] == 0:
-                continue
-                # raise ValueError("Algorithm is incorrect: x is already sold")
-            else:
+    return price1, price2, price3
 
-                if x[seat] == 0 or x[seat - (-1) ** (seat + 1)] == 0:
-                    continue
-                    # raise ValueError("Algorithm is incorrect: x is already sold")
-                else:
-                    y = y - 2
-                    Revenue = Revenue + price3[seat]
-                    x[seat] = 0
-                    x[seat - (-1) ** (seat + 1)] = 0
-                    p3num=p3num+1
-                    continue
-
-    return Revenue, p3num
-
-def run_Simulator():
-    start_time = time.time()
-    results = [0] * 100
-    p3 = [0] * 100
-    for i in range(100):
-        results[i],p3[i] = Simulation(i)
-
-    end_time = time.time()
-
-    mean = np.mean(results)
-    var = np.var(results)
-    p3n=np.mean(p3)
-    print(results)
-    print('average:', mean)
-    print('variance:', var)
-    print('p3 average', p3n)
-    print('time:', end_time - start_time)
-    return mean, var, p3n
 
 c = 8
 choice=0
 a1, a2, a3, b, tau = cases.homo_seats(c)
-means=[0]*51
-vars=[0]*51
-p3=[0]*51
-for step in range(51):
+out_p1=[]
+out_p2=[]
+out_p3=[]
+for step in range(6,7):
     a3=[0.1*step for i in range(len(a3))]
-    means[step], vars[step], p3[step]=run_Simulator()
-
-folder_path = "DBD_ke"
-file_name = "ke_simu_means_choice" + str(choice) + "capacity" + str(c) + ".txt"
-file_path = f"{folder_path}/{file_name}"
-np.savetxt(file_path, means)
-file_name = "ke_simu_vars_choice" + str(choice) + "capacity" + str(c) + ".txt"
-file_path = f"{folder_path}/{file_name}"
-np.savetxt(file_path, vars)
-file_name = "ke_simu_p3_choice" + str(choice) + "capacity" + str(c) + ".txt"
-file_path = f"{folder_path}/{file_name}"
-np.savetxt(file_path, p3)
+    p1,p2,p3=Price_Calculate()
+    out_p1.append(p1[1:])
+    out_p2.append(p2[1:])
+    out_p3.append(p3[1:])
+    
+df1 = pd.DataFrame(out_p1)
+df2 = pd.DataFrame(out_p2)
+df3 = pd.DataFrame(out_p3)
+output_file = "DLP_prices.xlsx"  # Replace with your desired file path
+sheet1 = "price1"  # Replace with your desired sheet name
+sheet2 = "price2"
+sheet3 = "price3"
+# Save to a specific sheet
+with pd.ExcelWriter(output_file, mode='w', engine='openpyxl') as writer:
+    df1.to_excel(writer, sheet_name=sheet1, index=False, header=True)
+    df2.to_excel(writer, sheet_name=sheet2, index=False, header=True)
+    df3.to_excel(writer, sheet_name=sheet3, index=False, header=True)

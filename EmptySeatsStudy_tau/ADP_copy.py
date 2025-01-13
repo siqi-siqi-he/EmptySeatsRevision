@@ -590,7 +590,7 @@ T = c * 2
 a1, a2, a3, b, tau = cases.homo_seats(c)
 results=[0]*51
 
-for step in range(51):
+for step in range(6,7):
     a3=[0.1*step for i in range(len(a3))]
     results[step]=ADP()
 

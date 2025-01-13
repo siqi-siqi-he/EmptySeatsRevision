@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-import ADP_NL_cases as cases
+import cases as cases
 import cvxpy as cp
 import math
 from cvxpy.error import SolverError

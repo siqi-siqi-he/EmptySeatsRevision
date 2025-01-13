@@ -1,7 +1,7 @@
 import numpy as np
 
 c=24
-choice=3
+choice=1
 folder_path = "ADP"
 file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) +".txt"
 file_path = f"{folder_path}/{file_name}"

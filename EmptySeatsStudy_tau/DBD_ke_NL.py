@@ -285,7 +285,7 @@ def computeDP(choice):
         temp_UB = V[T,1] + sum(v[T, :]) - v[T, i] + w[T] * c
         if UB>temp_UB:
             UB=temp_UB
-        folder_path = "DBD"
+        folder_path = "DBD_ke"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         file_name = "DBD_NL_ke_DPtable" + str(choice) + "capacity" + str(c) + "compo"+str(i)+ "step"+str(step)+".txt"
