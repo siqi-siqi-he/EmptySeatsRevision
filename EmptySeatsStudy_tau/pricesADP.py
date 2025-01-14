@@ -68,14 +68,14 @@ def r3(j,p1,p2,p3,a1, a2, a3, b, tau):
     return result
 
 def read(c,choice):
-    folder_path = "ADP"
-    file_name = "v_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    folder_path = "BB"
+    file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     v = np.loadtxt(file_path)
-    file_name = "w_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "w_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     w = np.loadtxt(file_path)
-    file_name = "theta_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "theta_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     theta = np.loadtxt(file_path)
 
@@ -93,16 +93,17 @@ def Price_Calculate():
     p2j = cp.Variable(c, name="p2j")
     p3j = cp.Variable(c, name="p3j")
     #maybe other variables
-    folder_path = "ADP"
-    file_name = "v_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    folder_path = "BB"
+    file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     v = np.loadtxt(file_path)
-    file_name = "w_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "w_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     w = np.loadtxt(file_path)
-    file_name = "theta_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "theta_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     theta = np.loadtxt(file_path)
+
     x = np.array([0,0,1,1,0,0,0,0])
     y = 2
     price1=[0]*(T+1)
@@ -184,10 +185,10 @@ def Price_Calculate():
         obj_value = subp.value
         print('r1', r1(p10,p2j0,p3j0,a1, a2, a3, b, tau))
         price1[t]=r1(p10,p2j0,p3j0,a1, a2, a3, b, tau)
-        price2[t]=r2(2,p10,p2j0,p3j0,a1, a2, a3, b, tau)
+        price2[t]=r2(3,p10,p2j0,p3j0,a1, a2, a3, b, tau)
         print('r2j',[r2(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)])
         print('r2',price2[t])
-        price3[t] = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)][2]
+        price3[t] = [r3(j, p10,p2j0,p3j0,a1, a2, a3, b, tau) for j in range(c)][3]
         print('r3',price3[t])
 
     return price1, price2, price3
@@ -195,7 +196,7 @@ def Price_Calculate():
 
 
 c = 8
-choice=0
+choice=1
 a1, a2, a3, b, tau = cases.homo_seats(c)
 out_p1=[]
 out_p2=[]
@@ -210,12 +211,12 @@ for step in range(10,11):
 df1 = pd.DataFrame(out_p1)
 df2 = pd.DataFrame(out_p2)
 df3 = pd.DataFrame(out_p3)
-output_file = "ADP_prices3.xlsx"  # Replace with your desired file path
+output_file = "ADP_prices.xlsx"  # Replace with your desired file path
 sheet1 = "price1"  # Replace with your desired sheet name
 sheet2 = "price2"
 sheet3 = "price3"
-# Save to a specific sheet
-# with pd.ExcelWriter(output_file, mode='w', engine='openpyxl') as writer:
-#     df1.to_excel(writer, sheet_name=sheet1, index=False, header=True)
-#     df2.to_excel(writer, sheet_name=sheet2, index=False, header=True)
-#     df3.to_excel(writer, sheet_name=sheet3, index=False, header=True)
+#Save to a specific sheet
+with pd.ExcelWriter(output_file, mode='w', engine='openpyxl') as writer:
+    df1.to_excel(writer, sheet_name=sheet1, index=False, header=True)
+    df2.to_excel(writer, sheet_name=sheet2, index=False, header=True)
+    df3.to_excel(writer, sheet_name=sheet3, index=False, header=True)
