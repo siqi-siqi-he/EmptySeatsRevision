@@ -5,12 +5,7 @@ import ADP_NL_cases as cases
 import math
 import time
 import os
-
-c=8
-T=c*2
-choice=0
-
-
+import pandas as pd
 
 def UP_t(c, a1, a2, a3, b, tau):
     result = 1 - 1 / (1 + math.exp(a1 * tau[0]) + sum(math.exp(a2[j]) for j in range(c)) ** tau[1]
@@ -255,18 +250,24 @@ bounds=[0]*11
 for choice in range(5,6):
     print("choice:", choice)
     for i in range(1,6):
-        #this means that we take capacity of bus from 8 to 80
+        #this means that we take capacity of bus from 8 to 40
         c=i*8
         print("c:", c)
         T=c*2
         a1, a2, a3, b, tau = cases.hom_hom_in_seats(c)
         results[i], bounds[i]=computeDP(choice)
-    folder_path = "results"
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
 
-    file_name = "UB_DBD" + str(choice) + "capacity.txt"
-    file_path = f"{folder_path}/{file_name}"
-    np.savetxt(file_path, bounds)
-    #print(results)
+        folder_path = "results"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        file_name = "UB_DBD" + str(choice) + "capacity.csv"
+        file_path_UB = f"{folder_path}/{file_name}"
+        try:
+            df_UB = pd.read_csv(file_path_UB, index_col=0)
+        except FileNotFoundError:
+            df_UB = pd.DataFrame(columns=["i", "Result"]).set_index("i")
+
+        df_UB.loc[int(c / 8)] = bounds[i]
+        df_UB.to_csv(file_path_UB)
 
