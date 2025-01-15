@@ -780,8 +780,8 @@ def ADP(c):
     return Z
 
 
-c=8
-choice=4
+c=40
+choice=5
 sig=0.001
 #set the number of processors for parallel computing
 num_processes=16
