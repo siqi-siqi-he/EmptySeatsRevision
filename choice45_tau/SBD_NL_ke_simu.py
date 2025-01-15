@@ -208,7 +208,7 @@ var_size=np.zeros((10,6))
 
 for choice in range(5,6):
 
-    for j in range(1,10):
+    for j in range(10,11):
         c=j*8
         T=c*2
         a1, a2, a3, b, tau = choose_choice(choice, c)
@@ -232,7 +232,7 @@ for choice in range(5,6):
     directory = "simu_results"
     os.makedirs(directory, exist_ok=True)
     full_path = f"{directory}/mean_SBD_ke_simu_choice_{choice}_CRN.txt"
-    np.savetxt(full_path, mean_size[:,choice-1])
+    #np.savetxt(full_path, mean_size[:,choice-1])
     full_path = f"{directory}/var_SBD_ke_simu_choice_{choice}_CRN.txt"
-    np.savetxt(full_path, var_size[:,choice-1])
+    #np.savetxt(full_path, var_size[:,choice-1])
 
