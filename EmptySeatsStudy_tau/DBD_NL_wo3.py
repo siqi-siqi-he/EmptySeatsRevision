@@ -8,7 +8,7 @@ import os
 
 c=8
 T=c*2
-choice=0
+choice=1
 
 
 
@@ -20,13 +20,13 @@ def UP_t(c, a1, a2, a3, b, tau):
 
 def read(c,choice):
     folder_path = "wo3_BB"
-    file_name = "v_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     v=np.loadtxt(file_path)
-    file_name = "w_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "w_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     w=np.loadtxt(file_path)
-    file_name = "theta_value_choice" + str(choice) + "capacity" + str(c) + "step" + str(step) + ".txt"
+    file_name = "theta_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
     file_path = f"{folder_path}/{file_name}"
     theta=np.loadtxt(file_path)
     #if __name__ == "__main__":
@@ -214,17 +214,17 @@ def computeDP(choice):
     UB_DBD_y = V[T, c] + sum(v[T, :])
     return UB_DBD_y
 
-
+choice=1
 a1, a2, a3, b, tau = cases.homo_seats(c)
 results=[0]*51
 
-for step in range(51):
+for step in range(6,7):
     a3 = [0.1 * step for i in range(len(a3))]
-    results[step] = computeDP(0)
+    results[step] = computeDP(1)
 
 folder_path = "wo3_DBD"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
-file_name = "DBD_NL_results" + str(choice) + "capacity" + str(c) + "2.txt"
+file_name = "DBD_NL_results" + str(choice) + "capacity" + str(c) + ".txt"
 file_path = f"{folder_path}/{file_name}"
 np.savetxt(file_path, results)
