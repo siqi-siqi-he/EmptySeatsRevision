@@ -271,9 +271,6 @@ def subproblem(v, w, theta, t,c, b, tau, a1,a2, a3,till_end=False,time_limit=Tru
         [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] - (v[t - 1, j] + w[t - 1]) * p2j[j]
          for j in range(c)]) \
                    + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
-                   + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j] - (
-                v[t - 1, j] + v[t - 1, j - (-1) ** (j + 1)] + 2 * w[t - 1]) * p3j[j] for j in range(c)]) \
-                   + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0) \
                    - theta[t] + theta[t - 1] - (w[t] - w[t - 1]) * (y + 1) - sum(
         (v[t, j] - v[t - 1, j]) * x[j] for j in range(c))
 
@@ -282,8 +279,6 @@ def subproblem(v, w, theta, t,c, b, tau, a1,a2, a3,till_end=False,time_limit=Tru
                    p0 >= eps,
                    p2 >= eps,
                    p2 <= 1,
-                   p3 >= eps,
-                   p3 <= 1,
                    p1 + p0 + p2 + p3 == 1,
                    p2 == cp.sum(p2j),
                    p3 == cp.sum(p3j),
@@ -294,14 +289,10 @@ def subproblem(v, w, theta, t,c, b, tau, a1,a2, a3,till_end=False,time_limit=Tru
                    x <= 1,
                    p1 <= y + 1,
                    p2j <= y + 1,
-                   p3j <= y + eps / c,  # p3j <= math.floor(y / 2) + eps / c,
+                   p3j == eps / c,  # p3j <= math.floor(y / 2) + eps / c,
                    p2j <= 1,
-                   p3j <= 1,
                    p2j >= eps / c,
-                   p3j >= eps / c,
                    p2j <= x + eps / c,
-                   p3j <= x + eps / c,
-                   p3j <= y + eps / c,
                    cp.sum(x)>=y+1]
     for j in range(c):
         constraints = constraints + [p3j[j] <= x[j - (-1) ** (j + 1)] + eps / c]
@@ -317,7 +308,7 @@ def subproblem(v, w, theta, t,c, b, tau, a1,a2, a3,till_end=False,time_limit=Tru
     return p10[0], p20, p30, x0, y0[0]+1, res
 
 def save(v, w, theta, c, choice):
-    folder_path = "BB"
+    folder_path = "wo3_BB"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "v_value_ADP_NL_CVXPY_choice" + str(choice) + "capacity" + str(c) + "BB_ex.txt"
