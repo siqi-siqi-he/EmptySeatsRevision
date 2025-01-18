@@ -1,6 +1,6 @@
 import docplex
 from docplex.mp.model import Model
-import cases as cases
+import Fig7_cases as cases
 import math
 import time
 import numpy as np
@@ -239,8 +239,6 @@ class BBNode_exist():
                 node.y_vars_r = y_vars_r
                 bestnode = node
                 end = time.time()
-                print("Nodes searched: ", nodecount)
-                print("time:", end - start)
                 return bestres_r, bestnode
 
             if res<bestres_r:
@@ -264,8 +262,6 @@ class BBNode_exist():
                 heappush(heap, (-res, next(counter),
                                 new_node))
         end=time.time()
-        print("Nodes searched: ", nodecount)
-        print("time:",end-start)
         return bestres_r, bestnode
 
 def UP_t(c, a1, a2, a3, b, tau):
@@ -552,7 +548,7 @@ def ADP():
                               + sum(p3[j] * (r3(j, p1, p2, p3)) for j in range(c)))
             sub_t_end = time.time()
 
-            p#rint('sub single time:', sub_t_end - sub_t_start)
+            #print('sub single time:', sub_t_end - sub_t_start)
         sub_end=time.time()
         #print('sub total time', sub_end-sub_start)
         lp_start = time.time()
