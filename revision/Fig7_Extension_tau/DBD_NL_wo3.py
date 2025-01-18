@@ -17,7 +17,7 @@ def UP_t(c, a1, a2, a3, b, tau):
     return result
 
 
-def read(c,choice):
+def read(c):
     folder_path = "wo3_ADP"
     file_name = "v_value_choice" + str(preference) + "a0" + str(a0) + ".txt"
     file_path = f"{folder_path}/{file_name}"
