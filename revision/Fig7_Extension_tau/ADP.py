@@ -600,4 +600,5 @@ for preference in range(1,2):
             a3=[0.8]*8
         print(a0)
         results[preference][strength]=ADP()
+        print(results[preference][strength])
     print(results)
