@@ -1,7 +1,7 @@
 import cvxpy as cp
 import numpy as np
 import Branch_Bound as BB
-import new_cases as cases
+import Fig7_cases as cases
 import math
 import time
 import os
@@ -18,7 +18,7 @@ def UP_t(c, a1, a2, a3, b, tau):
 
 
 def read(c,choice):
-    folder_path = "ADP"
+    folder_path = "wo3_ADP"
     file_name = "v_value_choice" + str(preference) + "a0" + str(a0) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     v=np.loadtxt(file_path)
@@ -148,7 +148,7 @@ def computeDP():
     for t in range(1,T+1):
         V[t, 0] = V[t - 1, 0]
         for y in range(1,c+1):
-            if y==1:
+            if y>=1:
                 objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1+p1*V[t-1,y-1] \
                                + cp.sum(
                     [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] +(V[t-1,y-1]-v[t - 1, j]) * p2j[j]
@@ -184,62 +184,16 @@ def computeDP():
                 p20 = [v.value for v in sol.p2j_vars]
                 p30 = [v.value for v in sol.p3j_vars]
                 x0 = sol.bool_vars_r
-                V[t, 1] = res
-
-            if y>1:
-                objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 + p1 * V[t - 1, y - 1] \
-                               + cp.sum(
-                    [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] - (v[t - 1, j]) * p2j[j] + V[
-                        t - 1, y - 1] * p2j[j] for j in range(c)]) \
-                               + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
-                               + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j] - (
-                        v[t - 1, j] + v[t - 1, j - (-1) ** (j + 1)] - V[t - 1, y - 2]) * p3j[j] for j in range(c)]) \
-                               + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0) \
-                               + p0 * V[t - 1, y] - sum((v[t, j] - v[t - 1, j]) * x[j] for j in range(c))
-
-                constraints = [p1 <= 1,
-                               p1 >= eps,
-                               p0 >= eps,
-                               p2 >= eps,
-                               p2 <= 1,
-                               p3 >= eps,
-                               p3 <= 1,
-                               p1 + p0 + p2 + p3 == 1,
-                               p2 == cp.sum(p2j),
-                               p3 == cp.sum(p3j),
-                               p0 >= 1 - UP_t(c, a1, a2, a3, b, tau),
-                               x >= 0,
-                               x <= 1,
-                               p2j <= 1,
-                               p3j <= 1,
-                               p2j >= eps / c,
-                               p3j >= eps / c,
-                               p2j <= x + eps / c,
-                               p3j <= x + eps / c]
-
-                for j in range(c):
-                    constraints = constraints + [p3j[j] <= x[j - (-1) ** (j + 1)] + eps / c]
-                bool_vars = [x[i] for i in range(c)]
-                vars = {p0[0], p2[0], p3[0]}
-                func = lambda p0, p10, p20, p30, x: obj_func2(v, w, theta, t, p0, p10, p20, p30, x, y, V)
-                ite = 1000
-                root = BB.BBNode(vars=vars, constraints=constraints, objective=objective_cp, bool_vars=bool_vars,
-                                     p0_vars={p0}, p1_vars={p1},
-                                     p2j_vars={p2j[j] for j in range(c)}, p3j_vars={p3j[j] for j in range(c)}, func=func)
-                res, sol = root.bbsolve()
-
-                p10 = np.squeeze([v.value for v in sol.p1_vars])
-                p20 = [v.value for v in sol.p2j_vars]
-                p30 = [v.value for v in sol.p3j_vars]
-                x0 = sol.bool_vars_r
                 V[t, y] = res
+
+            
 
 
     end=time.time()
     print(V)
     print('total time',end-start)
 
-    folder_path = "DBD_NL"
+    folder_path = "wo3_DBD_NL"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "DBD_NL_DPtable" + str(preference) + "a0" + str(a0) +  ".txt"

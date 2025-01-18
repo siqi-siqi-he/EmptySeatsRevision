@@ -1,7 +1,7 @@
 import cvxpy as cp
 import numpy as np
 import Branch_Bound as BB
-import new_cases as cases
+import Fig7_cases as cases
 import math
 import time
 import os
