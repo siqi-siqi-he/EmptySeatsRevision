@@ -100,8 +100,6 @@ class BBNode_till_end():
 
             if prob.status in ["infeasible","unbounded"]:
                 end = time.time()
-                print("Nodes searched: ", nodecount)
-                print("time:", end - start)
                 return bestres_r, bestnode
             bool_vars_r = ([np.round(v.value) for v in node.bool_vars])
             p2j_vars_r = [v.value for v in node.p2j_vars]
@@ -137,8 +135,6 @@ class BBNode_till_end():
                 heappush(heap, (-res, next(counter),
                                 new_node))
         end=time.time()
-        print("Nodes searched: ", nodecount)
-        print("time:", end-start)
         return bestres_r, bestnode
 
 
@@ -222,8 +218,6 @@ class BBNode_exist():
 
             if prob.status in ["infeasible","unbounded"]:
                 end=time.time()
-                print("Nodes searched: ", nodecount)
-                print("time:", end - start)
                 return bestres_r, bestnode
             bool_vars_r = ([np.round(v.value) for v in node.bool_vars])
             p2j_vars_r = [v.value for v in node.p2j_vars]
@@ -292,7 +286,7 @@ def r1(p1, p2, p3):
         print('r1 is bad', p1)
     else:
         try:
-            result = a1 / b[0] + 1 / b[0] * 1 / tau[0] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p1))
+            result = (a1 -a0/tau[0]) / b[0] + 1 / b[0] * 1 / tau[0] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p1))
         except ValueError as e:
             # Print the variable causing the ValueError
             print(f"ValueError: {e}")
@@ -313,10 +307,10 @@ def r2(j, p1, p2, p3):
             for i in range(len(p2)):
                 if p2[i] <= 0:
                     p2[i] = 0
-            result = a2[j] / b[1] + 1 / b[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p2[j])) + 1 / b[1] * (
+            result = (a2[j] -a0/tau[1])/ b[1] + 1 / b[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p2[j])) + 1 / b[1] * (
                     1 - tau[1]) / tau[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(sum(p2)))
         else:
-            result = a2[j] / b[1] + 1 / b[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p2[j])) + 1 / b[1] * (
+            result = (a2[j] -a0/tau[1]) / b[1] + 1 / b[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p2[j])) + 1 / b[1] * (
                         1 - tau[1]) / tau[1] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(sum(p2)))
     except ValueError as e:
         # Print the variable causing the ValueError
@@ -339,11 +333,11 @@ def r3(j, p1, p2, p3):
         for i in range(len(p3)):
             if p3[i] <= 0:
                 p3[i] = 0
-        result = a3[j] / b[2] + 1 / b[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p3[j])) + 1 / b[2] * (
+        result = (a3[j] -a0/tau[2])/ b[2] + 1 / b[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p3[j])) + 1 / b[2] * (
                     1 - tau[2]) / tau[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(sum(p3)))
     else:
         try:
-            result = a3[j] / b[2] + 1 / b[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p3[j])) + 1 / b[2] * (
+            result = (a3[j] -a0/tau[2]) / b[2] + 1 / b[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(p3[j])) + 1 / b[2] * (
                         1 - tau[2]) / tau[2] * (math.log(1 - p1 - sum(p2) - sum(p3)) - math.log(sum(p3)))
 
         except ValueError as e:
@@ -380,12 +374,12 @@ def subproblem(v, w, theta, t, type):
     p3j = cp.Variable(c, name="p3j")
     x = cp.Variable(c, name="x")
     y = cp.Variable(1, name="y")
-    objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 - w[t - 1] * p1 \
+    objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + (a1-a0/tau[0]) / b[0] * p1 - w[t - 1] * p1 \
                    + cp.sum(
-        [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] - (v[t - 1, j] + w[t - 1]) * p2j[j]
+        [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + (a2[j]-a0/tau[1]) / b[1] * p2j[j] - (v[t - 1, j] + w[t - 1]) * p2j[j]
          for j in range(c)]) \
                    + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
-                   + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + a3[j] / b[2] * p3j[j] - (
+                   + cp.sum([1 / b[2] * (-cp.kl_div(p3j[j], p0) + p0 - p3j[j]) + (a3[j]-a0/tau[2]) / b[2] * p3j[j] - (
                 v[t - 1, j] + v[t - 1, j - (-1) ** (j + 1)] + 2 * w[t - 1]) * p3j[j] for j in range(c)]) \
                    + 1 / b[2] * (1 - tau[2]) / tau[2] * (-cp.kl_div(p3, p0) - p3 + p0) \
                    - theta[t] + theta[t - 1] - (w[t] - w[t - 1]) * (y + 1) - sum(
@@ -490,7 +484,7 @@ def ADP():
                 if r20[i] < 0 or r30[i] < 0:
                     flag = 1
             if r10 < 0 or flag == 1:
-                raise Exception("negative prices!")
+                raise Exception("negative prices!", r10, r20, r30)
             if pi[t - 1] <= 0:
                 continue
             mp.add_constraint(thetap[t] - thetap[t - 1] + mp.sum((vp[t, j] - vp[t - 1, j]) * x[j] for j in range(c))
@@ -534,7 +528,7 @@ def ADP():
                 if r20[i]<0 or r30[i]<0:
                     flag=1
             if r10<0 or flag==1:
-                raise Exception("negative prices!")
+                raise Exception("negative prices!",r10)
             if pi[t - 1] <= 0:
                 continue
             mp.add_constraint(thetap[t] - thetap[t - 1] + mp.sum((vp[t, j] - vp[t - 1, j]) * x[j] for j in range(c))
