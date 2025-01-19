@@ -34,7 +34,7 @@ def read_DLP():
     return DLP, SL
 
 def read_DLP_wo3():
-    folder_path = "wo3_DLP_NL"
+    folder_path = "wo3_DLP_NL_alt"
     file_name = "simu_means_choice.txt"
     file_path = f"{folder_path}/{file_name}"
     DLP=np.loadtxt(file_path)
@@ -135,7 +135,7 @@ width=2
 marksize=10
 plt.rcParams['font.size'] = 14
 #homo
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(15, 9))
 DLP, DLP_SL = read_DLP()
 DLP_wo3, DLP_SL_wo3 = read_DLP_wo3()
 SBD_ke, SBD_ke_SL = read_SBD_ke()
@@ -148,10 +148,16 @@ plt.plot(x, DLP/DLP_wo3, linestyle='-', marker='o', label="Relative Expected Rev
 plt.plot(x, SBD_ke/SBD_ke_wo3, linestyle='-', marker='o', label="Relative Expected Revenue (Policy DPD-Benchmark)", color='green')
 plt.plot(x, SBD/SBD_wo3, linestyle='-', marker='o', label="Relative Expected Revenue (Policy DPD)", color='red')
 plt.plot(x, ADP/ADP_wo3, linestyle='-', marker='o', label="Relative Expected Revenue (Policy AFF)", color='yellow')
-plt.plot(x, DLP_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD) with extra seats", color='blue')
-plt.plot(x, DLP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD) without extra seats", color='blue')
+plt.plot(x, DLP_SL/8, linestyle='--', marker='o', label="SLF (Policy DPP) with extra seats", color='blue')
+plt.plot(x, DLP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPP) without extra seats", color='blue')
+# plt.plot(x, SBD_ke_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD-Benchmark) with extra seats", color='green')
+# plt.plot(x, SBD_ke_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD-Benchmark) without extra seats", color='green')
+plt.plot(x, SBD_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD) with extra seats", color='red')
+plt.plot(x, SBD_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD) without extra seats", color='red')
+# plt.plot(x, ADP_SL/8, linestyle='--', marker='o', label="SLF (Policy AFF) with extra seats", color='yellow')
+# plt.plot(x, ADP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy AFF) without extra seats", color='yellow')
 plt.xticks(x)
-plt.ylim(0, 2)
+plt.ylim(0, 2.8)
 
 
 plt.xlabel("Demand", fontsize=12)
@@ -159,5 +165,6 @@ plt.ylabel("Percentage", fontsize=12)
 plt.title("Relative Expected Revenue and SLF", fontsize=14)
 plt.legend(loc="upper left", fontsize=10)
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
+plt.legend(ncol=2)
 
 plt.show()

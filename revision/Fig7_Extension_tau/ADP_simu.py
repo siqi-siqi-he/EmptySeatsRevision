@@ -43,21 +43,21 @@ def r1(p1,p2,p3,a1, a2, a3, b, tau):
     if p1<=0:
         result=0
     else:
-        result=a1/b[0]+1/b[0]*1/tau[0]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p1))
+        result=(a1-a0/tau[0])/b[0]+1/b[0]*1/tau[0]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p1))
     return result
 
 def r2(j,p1,p2,p3,a1, a2, a3, b, tau):
     if p2[j]<=0:
         result=0
     else:
-        result=a2[j]/b[1]+1/b[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p2[j]))+1/b[1]*(1-tau[1])/tau[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p2)))
+        result=(a2[j]-a0/tau[1])/b[1]+1/b[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p2[j]))+1/b[1]*(1-tau[1])/tau[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p2)))
     return result
 
 def r3(j,p1,p2,p3,a1, a2, a3, b, tau):
     if p3[j]<=0:
         result=0
     else:
-        result=a3[j]/b[2]+1/b[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p3[j]))+1/b[2]*(1-tau[2])/tau[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p3)))
+        result=(a3[j]-a0/tau[2])/b[2]+1/b[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p3[j]))+1/b[2]*(1-tau[2])/tau[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p3)))
     return result
 
 def read(c,choice):

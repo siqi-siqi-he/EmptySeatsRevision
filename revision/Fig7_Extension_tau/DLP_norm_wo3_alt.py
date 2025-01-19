@@ -20,6 +20,7 @@ def DLP_UB(c):
     p2 = cp.Variable(1, name="p2")
     p3 = cp.Variable(1, name="p3")
     p2j = cp.Variable(c, name="p2j")
+    p3j = cp.Variable(c, name="p3j")
 
     objective_cp = T*(1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + (a1 -a0/tau[0])/ b[0] * p1\
                        + cp.sum(
@@ -31,13 +32,16 @@ def DLP_UB(c):
 
     constraints=[]
     for j in range(c):
-        constraints = constraints + [T*(p2j[j])<=1]
+        constraints = constraints + [T*(p2j[j]+p3j[j]+p3j[j - (-1) ** (j + 1)])<=1]
 
-    constraints = constraints+[T*(p1+p2)<=c]
+    constraints = constraints+[T*(p1+p2+p3*2)<=c]
     constraints=constraints+[p2j>=0,
+                   p3j>=0,
                    p1>=0,
-                   p0+p1+p2==1,
+                   p0+p1+p2+p3==1,
                    p2 == cp.sum(p2j),
+                   p3 == cp.sum(p3j),
+                   p3j==eps/c,
                    p0 >= 1 - UP_t(c, a1, a2, a3, b, tau)]
 
     subp = cp.Problem(objective, constraints)
@@ -50,12 +54,12 @@ def DLP_UB(c):
         dual[j]=constraints[j].dual_value
     d_temp=constraints[c].dual_value
     dual[c]=d_temp[0]
-    folder_path = "wo3_DLP_NL"
+    folder_path = "wo3_DLP_NL_alt"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     file_name = "DLPnorm" + str(preference) + "a0" + str(a0) + ".txt"
     file_path = f"{folder_path}/{file_name}"
-    #np.savetxt(file_path, dual)
+    np.savetxt(file_path, dual)
 
     return subp.value
 

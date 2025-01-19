@@ -43,21 +43,21 @@ def r1(p1,p2,p3,a1, a2, a3, b, tau):
     if p1<=0:
         result=0
     else:
-        result=a1/b[0]+1/b[0]*1/tau[0]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p1))
+        result=(a1-a0/tau[0])/b[0]+1/b[0]*1/tau[0]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p1))
     return result
 
 def r2(j,p1,p2,p3,a1, a2, a3, b, tau):
     if p2[j]<=0:
         result=0
     else:
-        result=a2[j]/b[1]+1/b[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p2[j]))+1/b[1]*(1-tau[1])/tau[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p2)))
+        result=(a2[j]-a0/tau[1])/b[1]+1/b[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p2[j]))+1/b[1]*(1-tau[1])/tau[1]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p2)))
     return result
 
 def r3(j,p1,p2,p3,a1, a2, a3, b, tau):
     if p3[j]<=0:
         result=0
     else:
-        result=a3[j]/b[2]+1/b[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p3[j]))+1/b[2]*(1-tau[2])/tau[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p3)))
+        result=(a3[j]-a0/tau[2])/b[2]+1/b[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(p3[j]))+1/b[2]*(1-tau[2])/tau[2]*(math.log(1-p1-sum(p2)-sum(p3))-math.log(sum(p3)))
     return result
 
 def read(c,choice):
@@ -74,10 +74,6 @@ def read(c,choice):
     return v,w,theta
 
 
-def choose_choice(c):
-
-    a1, a2, a3, b, tau = cases.homo_seats(c)
-    return a1, a2, a3, b, tau
 
 def findseats(rand,p1,pj):
     sum=p1
@@ -103,14 +99,15 @@ def Simulation(random):
     Revenue=0
 
     for t in range(T,0,-1):
-        objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + a1 / b[0] * p1 + V(x, y - 1, t - 1, c,
+        objective_cp = 1 / (b[0] * tau[0]) * (-cp.kl_div(p1, p0) + p0 - p1) + (a1-a0/tau[0]) / b[0] * p1 + V(x, y - 1, t - 1, c,
                                                                                                  choice) * p1 \
                        + cp.sum(
-            [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + a2[j] / b[1] * p2j[j] + V(x - E(j, c),
+            [1 / b[1] * (-cp.kl_div(p2j[j], p0) + p0 - p2j[j]) + (a2[j]-a0/tau[1]) / b[1] * p2j[j] + V(x - E(j, c),
                                                                                            y - 1, t - 1,
                                                                                            c, choice) *
              p2j[j] for j in range(c)]) \
-                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0)  + p0 * V(x, y, t - 1, c,
+                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
+                        + p0 * V(x, y, t - 1, c,
                                                                                                     choice)
         objective = cp.Maximize(objective_cp)
         if y==0:
@@ -130,10 +127,14 @@ def Simulation(random):
         for j in range(c):
             constraints = constraints + [p2j[j] <= x[j]+eps/c,
                                          p3j[j] == eps/c,
+                                         p3j[j] <= x[j - (-1) ** (j + 1)]+eps/c,
                                          p1 <= y+eps,
                                          p2j[j] <= y+eps/c,
+                                         p3j[j] <= math.floor(y / 2)+eps/c,
                                          p2j[j] <= 1,
-                                         p2j[j] >= eps/c]
+                                         p3j[j] <= 1,
+                                         p2j[j] >= eps/c,
+                                         p3j[j] >= eps/c]
         subp = cp.Problem(objective, constraints)
         try:
             subp.solve(solver=cp.MOSEK)
@@ -205,26 +206,10 @@ for preference in range(1,2):
     #+-0.2
     for strength in range(21):
         a0=strength*0.5-5
-        if preference==0:
-            file_name="a1_a0_"+str(a0)+"_a3decr0.2.txt"
-            file_path = f"{folder_path}/{file_name}"
-            a1=np.loadtxt(file_path)
-            file_name="a2_a0_"+str(a0)+"_a3decr0.2.txt"
-            file_path = f"{folder_path}/{file_name}"
-            a2=np.loadtxt(file_path)
-            a3=[0.4]*8
         if preference==1:
             a1=0.2
             a3=[0.6]*8
             a2=[0.4]*8
-        if preference==2:
-            file_name="a1_a0_"+str(a0)+"_a3incr0.2.txt"
-            file_path = f"{folder_path}/{file_name}"
-            a1=np.loadtxt(file_path)
-            file_name="a2_a0_"+str(a0)+"_a3incr0.2.txt"
-            file_path = f"{folder_path}/{file_name}"
-            a2=np.loadtxt(file_path)
-            a3=[0.8]*8
         print(a0)
         results_perround=[0]*num_sim
         SLF_perround=[0]*num_sim
@@ -235,6 +220,7 @@ for preference in range(1,2):
             rand = np.loadtxt(file_path_sim)
             results_perround[sim],SLF_perround[sim]=Simulation(rand)
         mean_size[preference,strength]=np.mean(results_perround)
+        print(mean_size[preference,strength])
         var_size[preference,strength]=np.var(results_perround)
         SLF_size[preference,strength]=np.mean(SLF_perround)
 
