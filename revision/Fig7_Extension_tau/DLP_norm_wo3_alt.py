@@ -6,6 +6,11 @@ import math
 import time
 import os
 
+
+#There are two ways to not sell empty seats. The first one is to delete var p3 and p3j everywhere. 
+# The other is to keep them but force p3==eps. This alt file is to test whether these two methods 
+# yield the same results. It turns out that the difference is up to precision error.
+
 def UP_t(c, a1, a2, a3, b, tau):
     result = 1 - 1 / (1 + math.exp(a1 * tau[0]) + sum(math.exp(a2[j]) for j in range(c)) ** tau[1]
                       + sum(math.exp(a3[j]) for j in range(c)) ** tau[2])

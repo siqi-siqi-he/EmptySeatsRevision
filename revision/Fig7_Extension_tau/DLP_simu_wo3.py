@@ -9,7 +9,24 @@ import mosek
 
 eps=1e-5
 
+def UP_t(c,a1, a2, a3, b, tau):
+    result=1-1/(1+math.exp(a1*tau[0])+sum(math.exp(a2[j]) for j in range(c))**tau[1]
+          +sum(math.exp(a3[j]) for j in range(c))**tau[2])
+    return result
 
+def UP_1(c,a1, a2, a3, b, tau):
+    result=math.exp(tau[0]*(a1))/(math.exp(tau[0]*(a1))+1)
+    return result
+
+def UP_2(j, c, a1, a2, a3, b, tau):
+    result = math.exp(a2[j]) * sum(math.exp(a2[j]) for j in range(c)) ** (tau[1] - 1) / (
+                1 + sum(math.exp(a2[j]) for j in range(c)) ** (tau[1]))
+    return result
+
+def UP_3(j, c, a1, a2, a3, b, tau):
+    result = math.exp(a3[j]) * sum(math.exp(a3[j]) for j in range(c)) ** (tau[2] - 1) / (
+            1 + sum(math.exp(a3[j]) for j in range(c)) ** (tau[2]))
+    return result
 
 def V(x, y, t,c):
     dual = read(c)
@@ -35,8 +52,9 @@ def r2(j,p1,p2,a1, a2, b, tau):
         result=(a2[j]-a0/tau[1])/b[1]+1/b[1]*(math.log(1-p1-sum(p2))-math.log(p2[j]))+1/b[1]*(1-tau[1])/tau[1]*(math.log(1-p1-sum(p2))-math.log(sum(p2)))
     return result
 
+
 def read(c):
-    folder_path = "wo3_DLP_NL_alt"
+    folder_path = "wo3_DLP_NL"
     file_name = "DLPnorm" + str(preference) + "a0" + str(a0) + ".txt"
     file_path = f"{folder_path}/{file_name}"
     dual = np.loadtxt(file_path)
@@ -50,13 +68,13 @@ def findseats(rand,p1,pj):
             return i
     raise TypeError("Math Wrong")
 
+
 def Simulation(random):
     SL=0
     p0 = cp.Variable(1, name="p0")
     p1 = cp.Variable(1, name="p1")
     p2 = cp.Variable(1, name="p2")
     p2j = cp.Variable(c, name="p2j")
-
 
     x = np.full(c,1)
     y = c
@@ -69,7 +87,8 @@ def Simulation(random):
                                                                                            y - 1, t - 1,
                                                                                            c) *
              p2j[j] for j in range(c)]) \
-                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0)
+                       + 1 / b[1] * (1 - tau[1]) / tau[1] * (-cp.kl_div(p2, p0) - p2 + p0) \
+                        + p0 * V(x, y, t - 1, c)
         objective = cp.Maximize(objective_cp)
         if y==0:
             break
@@ -96,19 +115,19 @@ def Simulation(random):
             pass
         except cp.error.SolverError as e:
             subp.solve(solver=cp.SCS)
-        if p0[0].value is None or p1[0].value is None or p2[0].value is None:
+        if p0[0].value is None or p1[0].value is None or p2[0].value is None :
             subp.solve(solver=cp.SCS)
-        if p0[0].value is None or p1[0].value is None or p2[0].value is None:
+        if p0[0].value is None or p1[0].value is None or p2[0].value is None :
             raise ValueError("None again, tried=", p0[0].value ,p1[0].value,p2[0].value)
         p00 = p0[0].value
         p10 = p1[0].value
         p20 = p2[0].value
         p2j0 = p2j.value
         obj_value = subp.value
-        price1=r1(p10,p2j0,a1, a2, b, tau)
+        price1=r1(p10,p2j0,a1, a2,b, tau)
         price2=[r2(j,p10,p2j0,a1, a2, b, tau) for j in range(c)]
 
-        if random[t-1] > p10 + p20:
+        if random[t-1] > p10 + p20 :
             continue
         elif random[t-1] < p10:
             Revenue = Revenue + price1
@@ -124,8 +143,9 @@ def Simulation(random):
                 y = y - 1
                 x[seat] = 0
                 SL+=1
-        
+
     return Revenue, SL
+
 
 c=8
 T=16
@@ -174,7 +194,7 @@ for preference in range(1,2):
         var_size[preference,strength]=np.var(results_perround)
         SLF_size[preference,strength]=np.mean(SLF_perround)
 
-folder_path = "wo3_DLP_NL"
+folder_path = "wo3_DLP_NL_alt"
 file_name = "simu_means_choice.txt"
 file_path = f"{folder_path}/{file_name}"
 #np.savetxt(file_path, mean_size)

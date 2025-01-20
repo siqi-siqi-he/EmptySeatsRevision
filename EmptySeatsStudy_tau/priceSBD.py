@@ -161,7 +161,7 @@ a1, a2, a3, b, tau = cases.homo_seats(c)
 out_p1=[]
 out_p2=[]
 out_p3=[]
-for step in range(51):
+for step in range(6,7):
     a3=[0.1*step for i in range(len(a3))]
     p1,p2,p3=Price_Calculate()
     out_p1.append(p1[1:])

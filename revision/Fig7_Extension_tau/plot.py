@@ -4,6 +4,7 @@ import pandas as pd
 
 x=np.arange(-5,5.5,0.5)
 
+
 def regular(a):
     a = [a[i] / (i + 1) / 8 for i in range(len(a))]
     return a
@@ -34,7 +35,7 @@ def read_DLP():
     return DLP, SL
 
 def read_DLP_wo3():
-    folder_path = "wo3_DLP_NL_alt"
+    folder_path = "wo3_DLP_NL"
     file_name = "simu_means_choice.txt"
     file_path = f"{folder_path}/{file_name}"
     DLP=np.loadtxt(file_path)
@@ -150,12 +151,12 @@ plt.plot(x, SBD/SBD_wo3, linestyle='-', marker='o', label="Relative Expected Rev
 plt.plot(x, ADP/ADP_wo3, linestyle='-', marker='o', label="Relative Expected Revenue (Policy AFF)", color='yellow')
 plt.plot(x, DLP_SL/8, linestyle='--', marker='o', label="SLF (Policy DPP) with extra seats", color='blue')
 plt.plot(x, DLP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPP) without extra seats", color='blue')
-# plt.plot(x, SBD_ke_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD-Benchmark) with extra seats", color='green')
-# plt.plot(x, SBD_ke_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD-Benchmark) without extra seats", color='green')
+plt.plot(x, SBD_ke_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD-Benchmark) with extra seats", color='green')
+plt.plot(x, SBD_ke_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD-Benchmark) without extra seats", color='green')
 plt.plot(x, SBD_SL/8, linestyle='--', marker='o', label="SLF (Policy DPD) with extra seats", color='red')
 plt.plot(x, SBD_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy DPD) without extra seats", color='red')
-# plt.plot(x, ADP_SL/8, linestyle='--', marker='o', label="SLF (Policy AFF) with extra seats", color='yellow')
-# plt.plot(x, ADP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy AFF) without extra seats", color='yellow')
+plt.plot(x, ADP_SL/8, linestyle='--', marker='o', label="SLF (Policy AFF) with extra seats", color='yellow')
+plt.plot(x, ADP_SL_wo3/8, linestyle='--', marker='s', label="SLF (Policy AFF) without extra seats", color='yellow')
 plt.xticks(x)
 plt.ylim(0, 2.8)
 
