@@ -82,60 +82,71 @@ def read(choice):
     '''
     return ADP, SBD, SBD_ke, DLP, DBD, DBD_ke
 
-width=2
+width=4
 marksize=10
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 20
+fs = 20
+figs = (15,10)
 #homo
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=figs)
 ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(1)
 
-plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
+plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=marksize)
+#plt.plot(x, DBD, label='TD-DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=marksize)
+
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=marksize)
+
+#plt.plot(x, DBD_ke, label='TD-DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+
 
 plt.xticks(x)
 plt.ylim(-5000,51000)
-plt.xlabel('Bus Size',fontsize=14)
-plt.ylabel('Runtime',fontsize=14)
+plt.xlabel('Bus size',fontsize=fs)
+plt.ylabel('Runtime',fontsize=fs)
 plt.legend(ncol=2)
 
 
 #aw
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=figs)
 ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(2)
 
-plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
+plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=marksize)
+#plt.plot(x, DBD, label='TD-DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=marksize)
+
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=marksize)
+
+#plt.plot(x, DBD_ke, label='TD-DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
 
 plt.xticks(x)
 plt.ylim(-5000,51000)
-plt.xlabel('Bus Size',fontsize=14)
-plt.ylabel('Runtime',fontsize=14)
+plt.xlabel('Bus size',fontsize=fs)
+plt.ylabel('Runtime',fontsize=fs)
 plt.legend(ncol=2)
 
 
 #het
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=figs)
 ADP, SBD, SBD_ke, DLP, DBD, DBD_ke=read(3)
 
-plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-plt.plot(x, DBD, label='TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-plt.plot(x, DBD_ke, label='TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
+plt.plot(x,DLP,label='DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, SBD, label='DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=marksize)
+#plt.plot(x, DBD, label='TD-DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP, label='AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=marksize)
+
+plt.plot(x, SBD_ke, label='DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=marksize)
+
+#plt.plot(x, DBD_ke, label='TD-DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+
+
 
 plt.xticks(x)
 plt.ylim(-5000,51000)
-plt.xlabel('Bus Size',fontsize=14)
-plt.ylabel('Runtime',fontsize=14)
+plt.xlabel('Bus size',fontsize=fs)
+plt.ylabel('Runtime',fontsize=fs)
 plt.legend(ncol=2)
 
 plt.show()

@@ -82,7 +82,7 @@ def read(choice):
     ADP_simu=fill(ADP_simu)
 
     folder_path = "simu_results"
-    file_name = "mean_DBD_NL_ke_simu_choice_"+str(choice)+"_CRN.txt"
+    file_name = "mean_DBD_ke_simu_choice_"+str(choice)+"_CRN.txt"
     file_path = f"{folder_path}/{file_name}"
     try:
         DBD_ke_simu=np.loadtxt(file_path)
@@ -120,31 +120,40 @@ def read(choice):
 
     return ADP, SBD, SBD_ke, DLP, DBD, DBD_ke, ADP_simu, DBD_ke_simu, DBD_simu, SBD_simu, SBD_ke_simu, DLP_simu
 
-width=2
+width=4
 marksize=10
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 20
+fs = 20
+figs = (15,10)
+
+
 #homo
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=figs)
 ADP, SBD, SBD_ke, DLP, DBD, DBD_ke, ADP_simu, DBD_ke_simu, DBD_simu, SBD_simu, SBD_ke_simu, DLP_simu=read(5)
 
-plt.plot(x, SBD/SBD, label='UB DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=10)
-plt.plot(x, DBD/SBD, label='UB TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke/SBD, label='UB DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=10)
-plt.plot(x, DBD_ke/SBD, label='UB TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP/SBD, label='UB AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x,DLP/SBD,label='UB DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=10)
-plt.plot(x, SBD_simu/SBD, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, DBD_simu/SBD, label='Policy TDPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, SBD_ke_simu/SBD, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, DBD_ke_simu/SBD, label='Policy TDPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
-plt.plot(x, ADP_simu/SBD, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x,DLP/SBD,label='UB DPP',color='violet', marker='.', linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, ADP/SBD, label='UB AFF',color='black', marker='^', linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, SBD/SBD, label='UB DPD',color='forestgreen', marker='o',markerfacecolor='none',linestyle='-', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke/SBD, label='UB DPD-Benchmark',color='orange', marker='x',markerfacecolor='none', linestyle='--', linewidth=width, markersize=marksize)
+plt.plot(x, DBD/SBD, label='UB TD-DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+
+plt.plot(x, DBD_ke/SBD, label='UB TD-DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+
+
 plt.plot(x,DLP_simu/SBD,label='Policy DPP',color='violet', marker='.', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, ADP_simu/SBD, label='Policy AFF',color='black', marker='^', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_simu/SBD, label='Policy DPD',color='forestgreen', marker='o',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, SBD_ke_simu/SBD, label='Policy DPD-Benchmark',color='orange', marker='x', markerfacecolor='none',linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD_simu/SBD, label='Policy TD-DPD',color='lightsteelblue', marker='s',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+plt.plot(x, DBD_ke_simu/SBD, label='Policy TD-DPD-Benchmark',color='crimson', marker='+',markerfacecolor='none', linestyle=':', linewidth=width, markersize=marksize)
+
+
 
 
 plt.xticks(x)
 plt.ylim(0.85, 1.3)
-plt.xlabel('Bus Size',fontsize=14)
-plt.ylabel('Expected Revenue Upper Bound',fontsize=14)
+plt.xlabel('Bus size',fontsize=fs)
+plt.ylabel('UB and simulations relative to UB DPD',fontsize=fs)
 plt.legend(ncol=2)
 
 plt.show()
